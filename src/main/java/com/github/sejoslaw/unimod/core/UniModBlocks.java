@@ -1,6 +1,6 @@
 package com.github.sejoslaw.unimod.core;
 
-import com.github.sejoslaw.unimod.block.BlockTransferNode;
+import com.github.sejoslaw.unimod.blocks.BlockTransferNode;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.Settings;

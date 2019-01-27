@@ -1,4 +1,4 @@
-package com.github.sejoslaw.unimod.tileentity;
+package com.github.sejoslaw.unimod.tileentities;
 
 import com.github.sejoslaw.unimod.core.UniModTileEntities;
 
@@ -16,7 +16,6 @@ import net.minecraft.util.Tickable;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public class TileEntityTransferNode extends LockableContainerBlockEntity implements Tickable {
-
 	public TileEntityTransferNode() {
 		super(UniModTileEntities.TRANSFER_NODE);
 	}

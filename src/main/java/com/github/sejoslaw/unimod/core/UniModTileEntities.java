@@ -1,6 +1,6 @@
 package com.github.sejoslaw.unimod.core;
 
-import com.github.sejoslaw.unimod.tileentity.TileEntityTransferNode;
+import com.github.sejoslaw.unimod.tileentities.TileEntityTransferNode;
 
 import net.minecraft.block.entity.BlockEntityType;
 

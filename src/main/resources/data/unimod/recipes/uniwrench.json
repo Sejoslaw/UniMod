@@ -1,20 +1,20 @@
 {
     "type": "crafting_shaped",
     "pattern": [
-        " R ",
-        "RDR",
-        " R "
+        " IR",
+        " II",
+        "I  "
     ],
     "key": {
-        "D": {
-            "item": "minecraft:diamond"
+        "I": {
+            "item": "minecraft:iron_ingot"
         },
         "R": {
             "item": "minecraft:redstone"
         }
     },
     "result": {
-        "item": "unimod:transfer_node",
-        "count": 2
+        "item": "unimod:uniwrench",
+        "count": 1
     }
 }

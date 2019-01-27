@@ -6,7 +6,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 def mcVersion = "1.14" // Version of Minecraft for which the mod is build.
-def modVersion = "1.0.0" // Version of the mod.
+def modVersion = "0.1.0" // Version of the mod.
 
 archivesBaseName = "UniMod"
 version = mcVersion + "-" + modVersion

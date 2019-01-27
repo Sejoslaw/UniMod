@@ -1,5 +1,8 @@
 {
     "variants": {
-        "": { "model": "unimod:block/transfer_node_disconnected" }
+        "mode=default": { "model": "unimod:block/transfer_node_disconnected" },
+        "mode=transfer": { "model": "unimod:block/transfer_node_connected_transfer" },
+        "mode=input": { "model": "unimod:block/transfer_node_connected_input" },
+        "mode=output": { "model": "unimod:block/transfer_node_connected_output" }
     }
 }
