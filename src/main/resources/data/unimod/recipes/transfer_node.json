@@ -1,0 +1,20 @@
+{
+    "type": "crafting_shaped",
+    "pattern": [
+        " R ",
+        "RDR",
+        " R "
+    ],
+    "key": {
+        "D": {
+            "item": "minecraft:diamong"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        }
+    },
+    "result": {
+        "item": "unimod:transfer_node",
+        "count": 2
+    }
+}

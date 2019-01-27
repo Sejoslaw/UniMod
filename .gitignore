@@ -1,3 +1,40 @@
+# Minecraft files
+
+.mixin.out/
+Minecraft_Client.*
+Minecraft_Server.*
+crash-reports/
+logs/
+options.txt
+saves/
+screenshots/
+usercache.json
+
+# gradle
+
+.gradle/
+build/
+out/
+
+# idea
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# fabric
+
+run/
+
 # Compiled class file
 *.class
 

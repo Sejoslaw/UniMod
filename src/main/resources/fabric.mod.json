@@ -1,0 +1,13 @@
+{
+    "id": "unimod",
+    "name": "UniMod",
+    "description": "Mod which add various useful things which are not that useful.",
+    "version": "1.0.0",
+    "side": "universal",
+    "initializers": [
+        "com.github.sejoslaw.unimod.modloader.fabric.UniMod"
+    ],
+    "requires": {
+        "fabric": "*"
+    }
+}
