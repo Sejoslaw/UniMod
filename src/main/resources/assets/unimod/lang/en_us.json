@@ -2,7 +2,7 @@
     "language.name": "English",
     "language.region": "United States",
     "language.code": "en_us",
-    "block.unimod.transfer_node": "Transfer Node",
+    "block.unimod.unicable": "UniCable",
     "item.unimod.uniwrench": "UniWrench",
     "itemGroup.unimod.unimod_group": "UniMod"
 }

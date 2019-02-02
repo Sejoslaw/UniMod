@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "mode=default": { "model": "unimod:block/unicable_disconnected" },
+        "mode=transfer": { "model": "unimod:block/unicable_connected_transfer" },
+        "mode=input": { "model": "unimod:block/unicable_connected_input" },
+        "mode=output": { "model": "unimod:block/unicable_connected_output" }
+    }
+}

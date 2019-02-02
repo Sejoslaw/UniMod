@@ -33,11 +33,11 @@ public final class UniModLoader {
 	}
 
 	private static void initBlocks() {
-		registerBlock(UniModNames.TRANSFER_NODE_ID, UniModBlocks.TRANSFER_NODE);
+		registerBlock(UniModNames.UNICABLE_ID, UniModBlocks.UNICABLE);
 	}
 
 	private static void initTileEntities() {
-		Registry.register(Registry.BLOCK_ENTITY, UniModNames.TRANSFER_NODE_ID, UniModTileEntities.TRANSFER_NODE);
+		Registry.register(Registry.BLOCK_ENTITY, UniModNames.UNICABLE_ID, UniModTileEntities.TRANSFER_NODE);
 	}
 
 	private static void registerBlock(Identifier id, Block block) {

@@ -27,7 +27,7 @@ public final class UniMod implements ModInitializer {
 					// Items
 					elements.add(new ItemStack(UniModItems.UNIWRENCH));
 					// Blocks
-					elements.add(new ItemStack(UniModBlocks.TRANSFER_NODE));
+					elements.add(new ItemStack(UniModBlocks.UNICABLE));
 				}).build();
 	}
 }

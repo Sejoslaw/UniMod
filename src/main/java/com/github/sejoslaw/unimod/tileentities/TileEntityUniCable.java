@@ -15,8 +15,8 @@ import net.minecraft.util.Tickable;
  * 
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public class TileEntityTransferNode extends LockableContainerBlockEntity implements Tickable {
-	public TileEntityTransferNode() {
+public class TileEntityUniCable extends LockableContainerBlockEntity implements Tickable {
+	public TileEntityUniCable() {
 		super(UniModTileEntities.TRANSFER_NODE);
 	}
 

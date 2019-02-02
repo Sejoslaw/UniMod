@@ -1,6 +1,6 @@
 package com.github.sejoslaw.unimod.core;
 
-import com.github.sejoslaw.unimod.blocks.BlockTransferNode;
+import com.github.sejoslaw.unimod.blocks.BlockUniCable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.Settings;
@@ -12,13 +12,13 @@ import net.minecraft.block.Material;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public final class UniModBlocks {
-	public static final Block TRANSFER_NODE;
+	public static final Block UNICABLE;
 
 	private UniModBlocks() {
 	}
 
 	static {
 		Settings transferNodeSettings = Block.Settings.of(Material.ICE).strength(1f, 1f);
-		TRANSFER_NODE = new BlockTransferNode(transferNodeSettings);
+		UNICABLE = new BlockUniCable(transferNodeSettings);
 	}
 }

@@ -2,7 +2,7 @@ package com.github.sejoslaw.unimod.blocks;
 
 import com.github.sejoslaw.unimod.core.UniModProperties;
 import com.github.sejoslaw.unimod.enums.EnumTransferMode;
-import com.github.sejoslaw.unimod.tileentities.TileEntityTransferNode;
+import com.github.sejoslaw.unimod.tileentities.TileEntityUniCable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -25,10 +25,10 @@ import net.minecraft.world.World;
  * 
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public class BlockTransferNode extends BlockWithEntity {
+public class BlockUniCable extends BlockWithEntity {
 	protected static final VoxelShape AABB = Block.createCubeShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
-	public BlockTransferNode(Settings settings) {
+	public BlockUniCable(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.stateFactory.getDefaultState().with(UniModProperties.MODE, EnumTransferMode.DEFAULT));
 	}
@@ -39,7 +39,7 @@ public class BlockTransferNode extends BlockWithEntity {
 	}
 
 	public BlockEntity createBlockEntity(BlockView view) {
-		return new TileEntityTransferNode();
+		return new TileEntityUniCable();
 	}
 
 	public BlockRenderType getRenderType(BlockState state) {
