@@ -1,19 +1,19 @@
 {
     "parent": "block/block",
     "textures": {
-        "transfer_node": "unimod:blocks/transfer_node_connected_output"
+        "unicable": "unimod:blocks/unicable_connected_output"
     },
     "elements": [{
         "name": "Cube",
         "from": [6, 6, 6],
         "to": [10, 10, 10],
         "faces": {
-            "north": { "texture": "#transfer_node", "uv": [6, 6, 10, 10] },
-            "east": { "texture": "#transfer_node", "uv": [6, 6, 10, 10] },
-            "south": { "texture": "#transfer_node", "uv": [6, 6, 10, 10] },
-            "west": { "texture": "#transfer_node", "uv": [6, 6, 10, 10] },
-            "up": { "texture": "#transfer_node", "uv": [6, 6, 10, 10] },
-            "down": { "texture": "#transfer_node", "uv": [6, 6, 10, 10] }
+            "north": { "texture": "#unicable", "uv": [6, 6, 10, 10] },
+            "east": { "texture": "#unicable", "uv": [6, 6, 10, 10] },
+            "south": { "texture": "#unicable", "uv": [6, 6, 10, 10] },
+            "west": { "texture": "#unicable", "uv": [6, 6, 10, 10] },
+            "up": { "texture": "#unicable", "uv": [6, 6, 10, 10] },
+            "down": { "texture": "#unicable", "uv": [6, 6, 10, 10] }
         }
     }]
 }

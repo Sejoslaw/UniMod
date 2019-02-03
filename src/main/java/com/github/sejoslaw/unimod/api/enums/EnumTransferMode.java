@@ -1,19 +1,22 @@
-package com.github.sejoslaw.unimod.common.enums;
+package com.github.sejoslaw.unimod.api.enums;
 
 import net.minecraft.util.StringRepresentable;
 
 /**
- * Transfer Modes.
+ * Transfer Modes. Implements StringRepresentable to allow it to be converted
+ * into Minecraft Property.
  * 
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public enum EnumTransferMode implements StringRepresentable {
-	DEFAULT("default"), TRANSFER("transfer"), INPUT("input"), OUTPUT("output");
+	DEFAULT("default", 0), TRANSFER("transfer", 1), INPUT("input", 2), OUTPUT("output", 3);
 
 	private final String modeName;
+	private final int id;
 
-	EnumTransferMode(String modeName) {
+	EnumTransferMode(String modeName, int id) {
 		this.modeName = modeName;
+		this.id = id;
 	}
 
 	public EnumTransferMode toggleTransfer() {
@@ -29,6 +32,10 @@ public enum EnumTransferMode implements StringRepresentable {
 		default:
 			return this;
 		}
+	}
+
+	public int getId() {
+		return this.id;
 	}
 
 	public String asString() {

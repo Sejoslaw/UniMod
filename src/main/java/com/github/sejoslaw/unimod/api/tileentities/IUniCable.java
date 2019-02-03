@@ -1,5 +1,10 @@
 package com.github.sejoslaw.unimod.api.tileentities;
 
+import java.util.Collection;
+import java.util.Map;
+
+import com.github.sejoslaw.unimod.api.enums.EnumTransferMode;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,4 +24,25 @@ public interface IUniCable {
 	 * @return Position of the UniCable.
 	 */
 	BlockPos getPos();
+
+	/**
+	 * @return Data which is stored by the current UniCable, that can be retrieved
+	 *         by the unique key.
+	 */
+	Map<String, Object> getData();
+
+	/**
+	 * @return Returns all messages which should be added into Player's chat.
+	 */
+	Collection<String> getMessages();
+
+	/**
+	 * @return Returns the current mode of the UniCable.
+	 */
+	EnumTransferMode getCurrentMode();
+
+	/**
+	 * Used to toggle next mode of the current cable.
+	 */
+	void toggleNextMode();
 }

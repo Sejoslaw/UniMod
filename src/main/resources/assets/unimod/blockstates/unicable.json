@@ -33,6 +33,7 @@
         "ctop=true,cbottom=false,cnorth=true,csouth=false,ceast=true,cwest=false": { "model": "unimod:block/unicable_connected_transfer_3_corner" },
         "ctop=true,cbottom=false,cnorth=true,csouth=false,ceast=false,cwest=true": { "model": "unimod:block/unicable_connected_transfer_3_corner" },
         "ctop=true,cbottom=false,cnorth=false,csouth=true,ceast=true,cwest=false": { "model": "unimod:block/unicable_connected_transfer_3_corner" },
+        "ctop=true,cbottom=false,cnorth=false,csouth=true,ceast=false,cwest=true": { "model": "unimod:block/unicable_connected_transfer_3_corner" },
         "ctop=true,cbottom=false,cnorth=false,csouth=false,ceast=true,cwest=true": { "model": "unimod:block/unicable_connected_transfer_3" },
         "ctop=false,cbottom=true,cnorth=true,csouth=true,ceast=false,cwest=false": { "model": "unimod:block/unicable_connected_transfer_3" },
         "ctop=false,cbottom=true,cnorth=true,csouth=false,ceast=true,cwest=false": { "model": "unimod:block/unicable_connected_transfer_3_corner" },
