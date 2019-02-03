@@ -1,6 +1,6 @@
-package com.github.sejoslaw.unimod.core;
+package com.github.sejoslaw.unimod.common;
 
-import com.github.sejoslaw.unimod.tileentities.TileEntityUniCable;
+import com.github.sejoslaw.unimod.common.tileentities.TileEntityUniCable;
 
 import net.minecraft.block.entity.BlockEntityType;
 
@@ -10,7 +10,7 @@ import net.minecraft.block.entity.BlockEntityType;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public final class UniModTileEntities {
-	public static BlockEntityType<TileEntityUniCable> TRANSFER_NODE = BlockEntityType.Builder
+	public static final BlockEntityType<TileEntityUniCable> UNI_CABLE = BlockEntityType.Builder
 			.create(TileEntityUniCable::new).build(null);
 
 	private UniModTileEntities() {

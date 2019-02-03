@@ -1,4 +1,4 @@
-package com.github.sejoslaw.unimod.enums;
+package com.github.sejoslaw.unimod.common.enums;
 
 import net.minecraft.util.StringRepresentable;
 
@@ -18,10 +18,14 @@ public enum EnumTransferMode implements StringRepresentable {
 
 	public EnumTransferMode toggleTransfer() {
 		switch (this) {
+		case DEFAULT:
+			return TRANSFER;
+		case TRANSFER:
+			return INPUT;
 		case INPUT:
 			return OUTPUT;
 		case OUTPUT:
-			return INPUT;
+			return DEFAULT;
 		default:
 			return this;
 		}

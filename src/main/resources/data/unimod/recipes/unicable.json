@@ -1,13 +1,13 @@
 {
     "type": "crafting_shaped",
     "pattern": [
-        " R ",
-        "RDR",
-        " R "
+        "RIR",
+        "I I",
+        "RIR"
     ],
     "key": {
-        "D": {
-            "item": "minecraft:diamond"
+        "I": {
+            "item": "minecraft:iron_ingot"
         },
         "R": {
             "item": "minecraft:redstone"
@@ -15,6 +15,6 @@
     },
     "result": {
         "item": "unimod:unicable",
-        "count": 2
+        "count": 16
     }
 }

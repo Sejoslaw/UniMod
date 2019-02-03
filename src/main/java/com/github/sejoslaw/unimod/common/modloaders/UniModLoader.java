@@ -1,10 +1,10 @@
-package com.github.sejoslaw.unimod.modloaders;
+package com.github.sejoslaw.unimod.common.modloaders;
 
-import com.github.sejoslaw.unimod.core.UniModBlocks;
+import com.github.sejoslaw.unimod.common.UniModBlocks;
+import com.github.sejoslaw.unimod.common.UniModItems;
+import com.github.sejoslaw.unimod.common.UniModTileEntities;
 import com.github.sejoslaw.unimod.core.UniModItemGroup;
-import com.github.sejoslaw.unimod.core.UniModItems;
 import com.github.sejoslaw.unimod.core.UniModNames;
-import com.github.sejoslaw.unimod.core.UniModTileEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -29,15 +29,15 @@ public final class UniModLoader {
 	}
 
 	private static void initItems() {
-		Registry.ITEM.register(UniModNames.UNIWRENCH_ID, UniModItems.UNIWRENCH);
+		Registry.ITEM.register(UniModNames.UNI_WRENCH_ID, UniModItems.UNI_WRENCH);
 	}
 
 	private static void initBlocks() {
-		registerBlock(UniModNames.UNICABLE_ID, UniModBlocks.UNICABLE);
+		registerBlock(UniModNames.UNI_CABLE_ID, UniModBlocks.UNI_CABLE);
 	}
 
 	private static void initTileEntities() {
-		Registry.register(Registry.BLOCK_ENTITY, UniModNames.UNICABLE_ID, UniModTileEntities.TRANSFER_NODE);
+		Registry.register(Registry.BLOCK_ENTITY, UniModNames.UNI_CABLE_ID, UniModTileEntities.UNI_CABLE);
 	}
 
 	private static void registerBlock(Identifier id, Block block) {

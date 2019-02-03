@@ -5,7 +5,7 @@
     "version": "0.1.0",
     "side": "universal",
     "initializers": [
-        "com.github.sejoslaw.unimod.modloaders.fabric.UniMod"
+        "com.github.sejoslaw.unimod.common.modloaders.fabric.UniMod"
     ],
     "requires": {
         "fabric": "*"
