@@ -26,18 +26,23 @@ public final class UniCableConnectionModule implements IUniCableModule {
 	}
 
 	public Collection<String> getMessages(IUniCable cable) {
+		boolean hasAny = false;
 		String message = "UniCable: [ ";
 
 		for (Direction direction : Direction.values()) {
 			if (this.canConnect(cable, direction)) {
 				message += direction.getName() + " ";
+				hasAny = true;
 			}
 		}
 
 		message += "]";
 
 		Collection<String> messages = new ArrayList<>();
-		messages.add(message);
+
+		if (hasAny) {
+			messages.add(message);
+		}
 
 		return messages;
 	}

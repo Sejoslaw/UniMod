@@ -26,18 +26,23 @@ public final class RedstoneSignalTransportModule implements IUniCableModule {
 	}
 
 	public Collection<String> getMessages(IUniCable cable) {
+		boolean hasAny = false;
 		String message = "Redstone Sources: [ ";
 
 		for (Direction direction : Direction.values()) {
 			if (this.canConnect(cable, direction)) {
 				message += direction.getName() + " ";
+				hasAny = true;
 			}
 		}
 
 		message += "]";
 
 		Collection<String> messages = new ArrayList<>();
-		messages.add(message);
+
+		if (hasAny) {
+			messages.add(message);
+		}
 
 		return messages;
 	}

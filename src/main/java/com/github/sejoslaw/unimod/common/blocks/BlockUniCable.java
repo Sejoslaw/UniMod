@@ -80,10 +80,14 @@ public class BlockUniCable extends BlockWithEntity {
 		IUniCable cable = ((IUniCable) tileEntity);
 
 		if (!player.isSneaking()) {
+			if (!player.world.isClient) {
+				return false;
+			}
+
 			Collection<String> messages = cable.getMessages();
 
 			if (messages != null) {
-				messages.forEach(message -> player.addChatMessage(new StringTextComponent(message), true));
+				messages.forEach(message -> player.addChatMessage(new StringTextComponent(message), false));
 			}
 
 			return true;
