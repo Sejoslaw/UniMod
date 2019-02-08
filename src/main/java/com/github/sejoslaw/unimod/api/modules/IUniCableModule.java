@@ -5,13 +5,14 @@ import java.util.Collection;
 import com.github.sejoslaw.unimod.api.tileentities.IUniCable;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Direction;
 
 /**
  * Describes a module which can be used as an addon to extend the functionality
  * of a UniCable. <br>
  * <br>
  * 
- * By default UniCable is build of 4 modules: <br>
+ * By default UniCable is build of 3 modules: <br>
  * - <b style="color:lightgreen">UniCableConnectionModule</b><br>
  * - <b style="color:green">ItemTransportModule</b><br>
  * - <b style="color:#4286f4">FluidTransportModule</b><br>
@@ -23,12 +24,29 @@ public interface IUniCableModule {
 	/**
 	 * Initializes given UniCable with required data.
 	 */
-	void initialize(IUniCable cable);
+	default void initialize(IUniCable cable) {
+	}
 
 	/**
 	 * @return Returns all messages which should be added into Player's chat.
 	 */
-	Collection<String> getMessages(IUniCable cable);
+	default Collection<String> getMessages(IUniCable cable) {
+		return null;
+	}
+
+	/**
+	 * @return Returns true if the given cable connect to a block on a given
+	 *         direction; otherwise false.
+	 */
+	default boolean canConnect(IUniCable cable, Direction direction) {
+		return false;
+	}
+
+	/**
+	 * Transmits X into specified direction.
+	 */
+	default void transmit(IUniCable cable, Direction direction) {
+	}
 
 	/**
 	 * Reads data from given NBT tag.

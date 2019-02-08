@@ -48,7 +48,7 @@ public class BlockUniCable extends BlockWithEntity {
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos,
 			VerticalEntityPosition verticalEntityPosition) {
 		// TODO: Update based on current model and connected sites.
-		return Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
+		return Block.createCuboidShape(4.5D, 4.5D, 4.5D, 11.5D, 11.5D, 11.5D);
 	}
 
 	public BlockEntity createBlockEntity(BlockView view) {
@@ -81,7 +81,11 @@ public class BlockUniCable extends BlockWithEntity {
 
 		if (!player.isSneaking()) {
 			Collection<String> messages = cable.getMessages();
-			messages.forEach(message -> player.addChatMessage(new StringTextComponent(message), true));
+
+			if (messages != null) {
+				messages.forEach(message -> player.addChatMessage(new StringTextComponent(message), true));
+			}
+
 			return true;
 		} else {
 			cable.toggleNextMode();

@@ -1,5 +1,8 @@
 package com.github.sejoslaw.unimod.common;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.github.sejoslaw.unimod.common.properties.IModularDirectionProperty;
 import com.github.sejoslaw.unimod.common.properties.ModularDirectionProperty;
 
@@ -12,6 +15,8 @@ import net.minecraft.util.math.Direction;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public final class UniModProperties {
+	private static final Set<IModularDirectionProperty> IS_CONNECTED_PROPERTIES = new HashSet<>();
+
 	public static final IModularDirectionProperty IS_CONNECTED_TOP = new ModularDirectionProperty(
 			BooleanProperty.create("ctop"), Direction.UP);
 	public static final IModularDirectionProperty IS_CONNECTED_BOTTOM = new ModularDirectionProperty(
@@ -26,5 +31,19 @@ public final class UniModProperties {
 			BooleanProperty.create("cwest"), Direction.WEST);
 
 	private UniModProperties() {
+	}
+
+	public static void addConnectionProperty(IModularDirectionProperty prop) {
+		IS_CONNECTED_PROPERTIES.add(prop);
+	}
+
+	public static BooleanProperty getConnectionPropertyFromDirection(Direction direction) {
+		for (IModularDirectionProperty prop : IS_CONNECTED_PROPERTIES) {
+			if (prop.getDirection() == direction) {
+				return prop.getProperty();
+			}
+		}
+
+		return null;
 	}
 }
