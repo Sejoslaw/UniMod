@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.github.sejoslaw.unimod.api.items.IUniWrench;
 import com.github.sejoslaw.unimod.api.tileentities.IUniCable;
+import com.github.sejoslaw.unimod.common.UniModLogger;
 import com.github.sejoslaw.unimod.common.UniModProperties;
 import com.github.sejoslaw.unimod.common.tileentities.TileEntityUniCable;
 
@@ -15,7 +16,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.VerticalEntityPosition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.StateFactory;
-import net.minecraft.text.StringTextComponent;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -66,9 +66,7 @@ public class BlockUniCable extends BlockWithEntity {
 	 */
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hitResult) {
-		// Check if Player is holding a UniWrench
-		if (!(player.getMainHandStack().getItem() instanceof IUniWrench)
-				&& !(player.getOffHandStack().getItem() instanceof IUniWrench)) {
+		if (!(player.getMainHandStack().getItem() instanceof IUniWrench)) {
 			return false;
 		}
 
@@ -79,7 +77,13 @@ public class BlockUniCable extends BlockWithEntity {
 
 		IUniCable cable = ((IUniCable) tileEntity);
 
-		if (!player.isSneaking()) {
+		boolean sneaking = player.isSneaking();
+		System.out.println(sneaking);
+
+		if (player.isSneaking()) {
+			cable.toggleNextMode();
+			return true;
+		} else {
 			if (!player.world.isClient) {
 				return false;
 			}
@@ -87,15 +91,12 @@ public class BlockUniCable extends BlockWithEntity {
 			Collection<String> messages = cable.getMessages();
 
 			if (messages != null) {
-				messages.forEach(message -> player.addChatMessage(new StringTextComponent(message), false));
+				player.addChatMessage(UniModLogger.info("UniCable Details:"), false);
+				messages.forEach(message -> player.addChatMessage(UniModLogger.info(message), false));
 			}
 
 			return true;
-		} else {
-			cable.toggleNextMode();
 		}
-
-		return false;
 	}
 
 	/**

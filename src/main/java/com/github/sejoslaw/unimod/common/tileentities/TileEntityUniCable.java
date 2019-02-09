@@ -27,11 +27,12 @@ import net.minecraft.util.math.Direction;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCable {
+	public static final String TRANSFER_MODE_KEY = "UniMod_TransferMode";
+
 	/**
 	 * Data which passed to modules.
 	 */
 	private final Map<String, Object> data = new HashMap<>();
-	private EnumTransferMode mode;
 
 	public TileEntityUniCable() {
 		super(UniModTileEntities.UNI_CABLE);
@@ -55,6 +56,9 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 			}
 		});
 
+		// Update transfer mode enum value
+		this.updateTransferMode(connections);
+
 		// Update block rendering for all connected directions.
 		this.updateRendering(connections);
 
@@ -71,7 +75,11 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	}
 
 	public EnumTransferMode getCurrentMode() {
-		return this.mode;
+		return (EnumTransferMode) this.data.get(TRANSFER_MODE_KEY);
+	}
+
+	public void setCurrentMode(EnumTransferMode mode) {
+		this.data.put(TileEntityUniCable.TRANSFER_MODE_KEY, mode);
 	}
 
 	public Collection<String> getMessages() {
@@ -92,7 +100,18 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	}
 
 	public void toggleNextMode() {
-		mode = mode.toggleTransfer();
+		EnumTransferMode newMode = this.getCurrentMode().toggleTransfer();
+		this.setCurrentMode(newMode);
+	}
+
+	private void updateTransferMode(Map<Direction, Set<IUniCableModule>> connections) {
+		if (connections.size() == 0) {
+			this.setCurrentMode(EnumTransferMode.DISCONNECTED);
+		}
+
+		if (connections.size() != 0 && this.getCurrentMode() == EnumTransferMode.DISCONNECTED) {
+			this.setCurrentMode(EnumTransferMode.TRANSFER);
+		}
 	}
 
 	/**

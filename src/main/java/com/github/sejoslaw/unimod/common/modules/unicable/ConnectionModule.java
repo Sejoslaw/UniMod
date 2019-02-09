@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public final class UniCableConnectionModule implements IUniCableModule {
+public final class ConnectionModule implements IUniCableModule {
 	public boolean canConnect(IUniCable cable, Direction direction) {
 		World world = cable.getWorld();
 		BlockPos pos = cable.getPos().offset(direction);

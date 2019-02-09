@@ -42,6 +42,11 @@ public interface IUniCable {
 	EnumTransferMode getCurrentMode();
 
 	/**
+	 * Sets new mode for this UniCable.
+	 */
+	void setCurrentMode(EnumTransferMode mode);
+
+	/**
 	 * Used to toggle next mode of the current cable.
 	 */
 	void toggleNextMode();

@@ -13,7 +13,8 @@ import net.minecraft.util.math.Direction;
  * <br>
  * 
  * By default UniCable is build of these modules: <br>
- * - <b style="color:lightgreen">UniCableConnectionModule</b><br>
+ * - <b style="color:darkviolet">TransferModeModule</b><br>
+ * - <b style="color:lightgreen">ConnectionModule</b><br>
  * - <b style="color:green">ItemTransportModule</b><br>
  * - <b style="color:#4286f4">FluidTransportModule</b><br>
  * - <b style="color:red">RedstoneSignalTransportModule</b><br>

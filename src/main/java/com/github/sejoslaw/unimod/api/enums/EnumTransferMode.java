@@ -9,7 +9,7 @@ import net.minecraft.util.StringRepresentable;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public enum EnumTransferMode implements StringRepresentable {
-	DEFAULT("default", 0), TRANSFER("transfer", 1), INPUT("input", 2), OUTPUT("output", 3);
+	DISCONNECTED("disconnected", 0), TRANSFER("transfer", 1), INPUT("input", 2), OUTPUT("output", 3);
 
 	private final String modeName;
 	private final int id;
@@ -21,14 +21,14 @@ public enum EnumTransferMode implements StringRepresentable {
 
 	public EnumTransferMode toggleTransfer() {
 		switch (this) {
-		case DEFAULT:
+		case DISCONNECTED:
 			return TRANSFER;
 		case TRANSFER:
 			return INPUT;
 		case INPUT:
 			return OUTPUT;
 		case OUTPUT:
-			return DEFAULT;
+			return DISCONNECTED;
 		default:
 			return this;
 		}
@@ -40,5 +40,18 @@ public enum EnumTransferMode implements StringRepresentable {
 
 	public String asString() {
 		return this.modeName;
+	}
+
+	public static EnumTransferMode getById(int id) {
+		switch (id) {
+		case 1:
+			return TRANSFER;
+		case 2:
+			return INPUT;
+		case 3:
+			return OUTPUT;
+		default:
+			return DISCONNECTED;
+		}
 	}
 }

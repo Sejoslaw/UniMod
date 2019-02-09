@@ -4,8 +4,9 @@ import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
 import com.github.sejoslaw.unimod.common.UniModBlocks;
 import com.github.sejoslaw.unimod.common.UniModItems;
 import com.github.sejoslaw.unimod.common.UniModTileEntities;
+import com.github.sejoslaw.unimod.common.modules.unicable.ConnectionModule;
 import com.github.sejoslaw.unimod.common.modules.unicable.RedstoneSignalTransportModule;
-import com.github.sejoslaw.unimod.common.modules.unicable.UniCableConnectionModule;
+import com.github.sejoslaw.unimod.common.modules.unicable.TransferModeModule;
 import com.github.sejoslaw.unimod.core.UniModItemGroup;
 import com.github.sejoslaw.unimod.core.UniModNames;
 
@@ -45,7 +46,8 @@ public final class UniModLoader {
 	}
 
 	private static void initUniCableModules() {
-		ModuleRegistry.addUniCableModule(new UniCableConnectionModule());
+		ModuleRegistry.addUniCableModule(new TransferModeModule());
+		ModuleRegistry.addUniCableModule(new ConnectionModule());
 		// ModuleRegistry.addUniCableModule(new ItemTransportModule());
 		// ModuleRegistry.addUniCableModule(new FluidTransportModule());
 		ModuleRegistry.addUniCableModule(new RedstoneSignalTransportModule());
