@@ -1,0 +1,64 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "unicable": "unimod:blocks/unicable_connected_transfer"
+    },
+    "elements": [{
+            "name": "Core",
+            "from": [6, 6, 6],
+            "to": [10, 10, 10],
+            "faces": {
+                "east": { "texture": "#unicable", "uv": [1, 6, 5, 10], "rotation": 270 },
+                "south": { "texture": "#unicable", "uv": [1, 6, 5, 10], "rotation": 90 }
+            }
+        },
+        {
+            "name": "Side_W",
+            "from": [0, 6, 6],
+            "to": [6, 10, 10],
+            "faces": {
+                "north": { "texture": "#unicable", "uv": [0, 0, 6, 4], "rotation": 180 },
+                "south": { "texture": "#unicable", "uv": [1, 0, 7, 4] },
+                "west": { "texture": "#unicable", "uv": [6, 6, 10, 10], "rotation": 180 },
+                "up": { "texture": "#unicable", "uv": [1, 0, 7, 4] },
+                "down": { "texture": "#unicable", "uv": [0, 0, 6, 4] }
+            }
+        },
+        {
+            "name": "Side_U",
+            "from": [6, 10, 6],
+            "to": [10, 16, 10],
+            "faces": {
+                "north": { "texture": "#unicable", "uv": [11, 10, 15, 16] },
+                "east": { "texture": "#unicable", "uv": [11, 9, 15, 15] },
+                "south": { "texture": "#unicable", "uv": [11, 9, 15, 15], "rotation": 180 },
+                "west": { "texture": "#unicable", "uv": [11, 10, 15, 16] },
+                "up": { "texture": "#unicable", "uv": [6, 6, 10, 10] }
+            }
+        },
+        {
+            "name": "Side_E",
+            "from": [6, 6, 0],
+            "to": [10, 10, 6],
+            "faces": {
+                "north": { "texture": "#unicable", "uv": [6, 6, 10, 10], "rotation": 180 },
+                "east": { "texture": "#unicable", "uv": [5, 0, 11, 4], "rotation": 180 },
+                "west": { "texture": "#unicable", "uv": [4, 0, 10, 4], "rotation": 180 },
+                "up": { "texture": "#unicable", "uv": [11, 10, 15, 16], "rotation": 180 },
+                "down": { "texture": "#unicable", "uv": [11, 10, 15, 16] }
+            }
+        },
+        {
+            "name": "Side_D",
+            "from": [6, 0, 6],
+            "to": [10, 6, 10],
+            "faces": {
+                "north": { "texture": "#unicable", "uv": [11, 10, 15, 16], "rotation": 180 },
+                "east": { "texture": "#unicable", "uv": [11, 9, 15, 15] },
+                "south": { "texture": "#unicable", "uv": [11, 10, 15, 16], "rotation": 180 },
+                "west": { "texture": "#unicable", "uv": [11, 9, 15, 15], "rotation": 180 },
+                "down": { "texture": "#unicable", "uv": [6, 6, 10, 10] }
+            }
+        }
+    ]
+}

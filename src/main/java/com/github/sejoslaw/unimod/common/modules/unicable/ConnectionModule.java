@@ -27,7 +27,7 @@ public final class ConnectionModule implements IUniCableModule {
 
 	public Collection<String> getMessages(IUniCable cable) {
 		boolean hasAny = false;
-		String message = "UniCable: [ ";
+		String message = "Cables: [ ";
 
 		for (Direction direction : Direction.values()) {
 			if (this.canConnect(cable, direction)) {
