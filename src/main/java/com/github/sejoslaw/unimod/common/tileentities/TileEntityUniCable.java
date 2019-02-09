@@ -104,6 +104,17 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		this.setCurrentMode(newMode);
 	}
 
+	public int getWeakRedstonePower() {
+		int power = 0;
+
+		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
+			int moduleRedstonePower = module.getWeakRedstonePower(this);
+			power = Math.max(power, moduleRedstonePower);
+		}
+
+		return power;
+	}
+
 	private void updateTransferMode(Map<Direction, Set<IUniCableModule>> connections) {
 		if (connections.size() == 0) {
 			this.setCurrentMode(EnumTransferMode.DISCONNECTED);

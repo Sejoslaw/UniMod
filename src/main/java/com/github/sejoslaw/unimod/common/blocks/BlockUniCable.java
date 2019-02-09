@@ -19,6 +19,7 @@ import net.minecraft.state.StateFactory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -99,12 +100,24 @@ public class BlockUniCable extends BlockWithEntity {
 		}
 	}
 
+	public boolean emitsRedstonePower(BlockState state) {
+		return true;
+	}
+
+	public int getWeakRedstonePower(BlockState state, BlockView view, BlockPos pos, Direction direction) {
+		BlockEntity cable = view.getBlockEntity(pos);
+
+		if (cable instanceof IUniCable) {
+			return ((IUniCable) cable).getWeakRedstonePower();
+		}
+
+		return 0;
+	}
+
 	/**
 	 * Add properties.
 	 */
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder);
-
 		builder.with(UniModProperties.IS_CONNECTED_TOP.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_BOTTOM.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_NORTH.getProperty());

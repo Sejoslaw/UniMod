@@ -50,4 +50,9 @@ public interface IUniCable {
 	 * Used to toggle next mode of the current cable.
 	 */
 	void toggleNextMode();
+
+	/**
+	 * @return Returns the Redstone Power of the current cable.
+	 */
+	int getWeakRedstonePower();
 }

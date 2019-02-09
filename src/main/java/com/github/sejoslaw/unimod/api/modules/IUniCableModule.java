@@ -60,4 +60,11 @@ public interface IUniCableModule {
 	 */
 	default void writeToNBT(IUniCable cable, CompoundTag tag) {
 	}
+
+	/**
+	 * @return Returns the Redstone Power that the module can create.
+	 */
+	default int getWeakRedstonePower(IUniCable cable) {
+		return 0;
+	}
 }
