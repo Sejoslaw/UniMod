@@ -15,6 +15,8 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.VerticalEntityPosition;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.block.AirBlockItem;
 import net.minecraft.state.StateFactory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -30,25 +32,12 @@ import net.minecraft.world.World;
 public class BlockUniCable extends BlockWithEntity {
 	public BlockUniCable(Settings settings) {
 		super(settings);
-		this.setDefaultState();
-	}
-
-	public void setDefaultState() {
-		BlockState defaultState = this.stateFactory.getDefaultState();
-
-		defaultState = defaultState.with(UniModProperties.IS_CONNECTED_TOP.getProperty(), false);
-		defaultState = defaultState.with(UniModProperties.IS_CONNECTED_BOTTOM.getProperty(), false);
-		defaultState = defaultState.with(UniModProperties.IS_CONNECTED_NORTH.getProperty(), false);
-		defaultState = defaultState.with(UniModProperties.IS_CONNECTED_SOUTH.getProperty(), false);
-		defaultState = defaultState.with(UniModProperties.IS_CONNECTED_EAST.getProperty(), false);
-		defaultState = defaultState.with(UniModProperties.IS_CONNECTED_WEST.getProperty(), false);
-
-		this.setDefaultState(defaultState);
 	}
 
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos,
 			VerticalEntityPosition verticalEntityPosition) {
-		// TODO: Update based on current model and connected sites.
+		// TODO: Update based on current model and connected sites. Add shapes for
+		// connection ends.
 		return Block.createCuboidShape(4.5D, 4.5D, 4.5D, 11.5D, 11.5D, 11.5D);
 	}
 
@@ -60,31 +49,24 @@ public class BlockUniCable extends BlockWithEntity {
 		return BlockRenderType.MODEL;
 	}
 
+	// TODO: Fix after Minecraft can process Shift-Clicking.
 	/**
-	 * How to use UniCable: <br>
-	 * - Right-Click with UniWrench to write in the chat current UniCable mode. <br>
-	 * - Shift-Right-Click with UniWrench to toggle different mode.
+	 * Everything with IUniWrench: - Right-Click -> show info - Shift-Right-Click ->
+	 * toggle mode
 	 */
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hitResult) {
-		if (!(player.getMainHandStack().getItem() instanceof IUniWrench)) {
-			return false;
-		}
-
 		BlockEntity tileEntity = world.getBlockEntity(pos);
+
 		if (!(tileEntity instanceof IUniCable)) {
 			return false;
 		}
 
 		IUniCable cable = ((IUniCable) tileEntity);
 
-		boolean sneaking = player.isSneaking();
-		System.out.println(sneaking);
+		ItemStack mainHandStack = player.getMainHandStack();
 
-		if (player.isSneaking()) {
-			cable.toggleNextMode();
-			return true;
-		} else {
+		if (mainHandStack.getItem() instanceof AirBlockItem) {
 			if (!player.world.isClient) {
 				return false;
 			}
@@ -97,7 +79,12 @@ public class BlockUniCable extends BlockWithEntity {
 			}
 
 			return true;
+		} else if (mainHandStack.getItem() instanceof IUniWrench) {
+			cable.toggleNextMode();
+			return true;
 		}
+
+		return false;
 	}
 
 	public boolean emitsRedstonePower(BlockState state) {

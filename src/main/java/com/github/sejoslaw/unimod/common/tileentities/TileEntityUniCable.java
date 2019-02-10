@@ -36,6 +36,7 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 
 	public TileEntityUniCable() {
 		super(UniModTileEntities.UNI_CABLE);
+
 		ModuleRegistry.UNI_CABLE_MODULES.forEach(module -> module.initialize(this));
 	}
 
@@ -44,7 +45,7 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		Map<Direction, Set<IUniCableModule>> connections = new HashMap<>();
 
 		// Get all connected directions
-		ModuleRegistry.UNI_CABLE_MODULES.forEach(module -> {
+		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
 			for (Direction direction : Direction.values()) {
 				if (module.canConnect(this, direction)) {
 					if (!connections.containsKey(direction)) {
@@ -54,10 +55,7 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 					connections.get(direction).add(module);
 				}
 			}
-		});
-
-		// Update transfer mode enum value
-		this.updateTransferMode(connections);
+		}
 
 		// Update block rendering for all connected directions.
 		this.updateRendering(connections);
@@ -90,12 +88,19 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
-		ModuleRegistry.UNI_CABLE_MODULES.forEach(module -> module.readFromNBT(this, tag));
+
+		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
+			module.readFromNBT(this, tag);
+		}
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
 		CompoundTag newTag = super.toTag(tag);
-		ModuleRegistry.UNI_CABLE_MODULES.forEach(module -> module.writeToNBT(this, newTag));
+
+		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
+			module.writeToNBT(this, newTag);
+		}
+
 		return newTag;
 	}
 
@@ -115,37 +120,28 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		return power;
 	}
 
-	private void updateTransferMode(Map<Direction, Set<IUniCableModule>> connections) {
-		if (connections.size() == 0) {
-			this.setCurrentMode(EnumTransferMode.DISCONNECTED);
-		}
-
-		if (connections.size() != 0 && this.getCurrentMode() == EnumTransferMode.DISCONNECTED) {
-			this.setCurrentMode(EnumTransferMode.TRANSFER);
-		}
-	}
-
 	/**
 	 * Updates rendering of the current block as well as of neighbours.
 	 */
 	private void updateRendering(Map<Direction, Set<IUniCableModule>> connections) {
 		BlockPos currentPos = this.getPos();
 		BlockState currentState = this.world.getBlockState(currentPos);
+		boolean isDirty = false;
 
-		// Clear all connections
-		currentState = this.updateConnections(currentState, Direction.values(), false);
-
-		// Update new connections
-		currentState = this.updateConnections(currentState, connections.keySet().toArray(new Direction[0]), true);
-
-		this.world.setBlockState(currentPos, currentState);
-	}
-
-	private BlockState updateConnections(BlockState state, Direction[] directions, boolean value) {
-		for (Direction direction : directions) {
+		for (Direction direction : Direction.values()) {
 			BooleanProperty prop = UniModProperties.getConnectionPropertyFromDirection(direction);
-			state = state.with(prop, value);
+
+			boolean isConnected = currentState.get(prop);
+			boolean shouldBeConnected = connections.containsKey(direction);
+
+			if (isConnected != shouldBeConnected) {
+				currentState = currentState.with(prop, shouldBeConnected);
+				isDirty = true;
+			}
 		}
-		return state;
+
+		if (isDirty) {
+			this.world.setBlockState(currentPos, currentState);
+		}
 	}
 }

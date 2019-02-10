@@ -44,7 +44,7 @@ public interface IUniCableModule {
 	}
 
 	/**
-	 * Transmits X into specified direction.
+	 * Transmits X into / from specified direction.
 	 */
 	default void transmit(IUniCable cable, Direction direction) {
 	}

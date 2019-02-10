@@ -32,6 +32,7 @@ public final class TransferModeModule implements IUniCableModule {
 	}
 
 	public void writeToNBT(IUniCable cable, CompoundTag tag) {
-		tag.putInt(TileEntityUniCable.TRANSFER_MODE_KEY, cable.getCurrentMode().getId());
+		int modeId = cable.getCurrentMode().getId();
+		tag.putInt(TileEntityUniCable.TRANSFER_MODE_KEY, modeId);
 	}
 }
