@@ -7,7 +7,7 @@ package com.github.sejoslaw.unimod.core;
  */
 public final class UniModCore {
 	public static final String MOD_ID = "unimod";
-	public static final String VERSION = "0.1.0";
+	public static final String VERSION = "0.0.1";
 	public static final String NAME = "UniMod";
 
 	private UniModCore() {

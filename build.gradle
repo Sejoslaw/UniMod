@@ -6,7 +6,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 def mcVersion = "1.14" // Version of Minecraft for which the mod is build.
-def modVersion = "0.1.0" // Version of the mod.
+def modVersion = "0.0.1" // Version of the mod.
 
 archivesBaseName = "UniMod"
 version = mcVersion + "-" + modVersion
@@ -29,4 +29,17 @@ dependencies {
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
+}
+
+task apiJar(type: Jar) {
+	from sourceSets.main.allSource
+	from sourceSets.main.output
+    include 'com/github/sejoslaw/unimod/api/**'
+    
+    classifier = 'api'
+    archiveName = "${archivesBaseName}-${version}-api.jar"
+}
+
+artifacts {
+	archives apiJar
 }
