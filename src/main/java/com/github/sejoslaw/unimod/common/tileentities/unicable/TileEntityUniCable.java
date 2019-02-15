@@ -99,11 +99,11 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		return tag;
 	}
 
-	public int getWeakRedstonePower() {
+	public int getWeakRedstonePower(Direction side) {
 		int power = 0;
 
 		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
-			int moduleRedstonePower = module.getWeakRedstonePower(this);
+			int moduleRedstonePower = module.getWeakRedstonePower(this, side);
 			power = Math.max(power, moduleRedstonePower);
 		}
 

@@ -19,13 +19,7 @@ import net.minecraft.world.World;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public final class CableConnectionModule implements IUniCableModule {
-	public void onBlockPlaced(World world, BlockPos pos, BlockState state) {
-		IUniCable cable = UniCableUtils.getCable(world, pos);
-
-		if (cable == null) {
-			return;
-		}
-
+	public void onBlockPlaced(IUniCable cable, World world, BlockPos pos, BlockState state) {
 		for (Direction direction : Direction.values()) {
 			IUniCable neighbour = UniCableUtils.getCable(world, pos.offset(direction));
 
@@ -39,7 +33,7 @@ public final class CableConnectionModule implements IUniCableModule {
 	}
 
 	public boolean canConnect(IUniCable cable, Direction direction) {
-		return cable.getCableSide(direction).isConnected();
+		return UniCableUtils.getCable(cable.getWorld(), cable.getPos().offset(direction)) != null;
 	}
 
 	public Collection<String> getMessages(IUniCable cable) {

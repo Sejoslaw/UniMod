@@ -48,7 +48,7 @@ public interface IUniCable {
 	/**
 	 * @return Returns the Redstone Power of the current cable.
 	 */
-	int getWeakRedstonePower();
+	int getWeakRedstonePower(Direction side);
 
 	/**
 	 * @return Returns the UniCable data for the specified side.

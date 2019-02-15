@@ -69,7 +69,7 @@ public interface IUniCableModule {
 	/**
 	 * @return Returns the Redstone Power that the module can create.
 	 */
-	default int getWeakRedstonePower(IUniCable cable) {
+	default int getWeakRedstonePower(IUniCable cable, Direction side) {
 		return 0;
 	}
 
@@ -89,6 +89,6 @@ public interface IUniCableModule {
 	/**
 	 * Executes after the UniCable has been placed on World.
 	 */
-	default void onBlockPlaced(World world, BlockPos pos, BlockState state) {
+	default void onBlockPlaced(IUniCable cable, World world, BlockPos pos, BlockState state) {
 	}
 }

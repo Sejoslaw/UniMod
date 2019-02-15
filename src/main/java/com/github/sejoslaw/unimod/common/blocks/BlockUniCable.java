@@ -101,8 +101,14 @@ public class BlockUniCable extends BlockWithEntity {
 	}
 
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		IUniCable cable = UniCableUtils.getCable(world, pos);
+
+		if (cable == null) {
+			return;
+		}
+
 		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
-			module.onBlockPlaced(world, pos, state);
+			module.onBlockPlaced(cable, world, pos, state);
 		}
 	}
 
@@ -114,7 +120,7 @@ public class BlockUniCable extends BlockWithEntity {
 		IUniCable cable = UniCableUtils.getCable(view, pos);
 
 		if (cable != null) {
-			return ((IUniCable) cable).getWeakRedstonePower();
+			return ((IUniCable) cable).getWeakRedstonePower(direction);
 		}
 
 		return 0;
@@ -155,7 +161,7 @@ public class BlockUniCable extends BlockWithEntity {
 		Collection<String> messages = cable.getMessages();
 
 		if (messages != null) {
-			player.addChatMessage(UniModLogger.info("UniCable Details:"), false);
+			player.addChatMessage(UniModLogger.info("---=== UniCable Details ===---"), false);
 			messages.forEach(message -> player.addChatMessage(UniModLogger.info(message), false));
 		}
 	}
