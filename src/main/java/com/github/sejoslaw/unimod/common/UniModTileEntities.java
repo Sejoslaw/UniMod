@@ -1,6 +1,6 @@
 package com.github.sejoslaw.unimod.common;
 
-import com.github.sejoslaw.unimod.common.tileentities.TileEntityUniCable;
+import com.github.sejoslaw.unimod.common.tileentities.unicable.TileEntityUniCable;
 
 import net.minecraft.block.entity.BlockEntityType;
 

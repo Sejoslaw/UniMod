@@ -3,16 +3,21 @@ package com.github.sejoslaw.unimod.common.blocks;
 import java.util.Collection;
 
 import com.github.sejoslaw.unimod.api.items.IUniWrench;
-import com.github.sejoslaw.unimod.api.tileentities.IUniCable;
+import com.github.sejoslaw.unimod.api.modules.IUniCableModule;
+import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.UniModLogger;
 import com.github.sejoslaw.unimod.common.UniModProperties;
-import com.github.sejoslaw.unimod.common.tileentities.TileEntityUniCable;
+import com.github.sejoslaw.unimod.common.tileentities.unicable.TileEntityUniCable;
+import com.github.sejoslaw.unimod.common.utils.UniCableUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.VerticalEntityPosition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -24,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -32,12 +38,12 @@ import net.minecraft.world.World;
 public class BlockUniCable extends BlockWithEntity {
 	public BlockUniCable(Settings settings) {
 		super(settings);
+
+		this.initializeDefaultState();
 	}
 
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos,
 			VerticalEntityPosition verticalEntityPosition) {
-		// TODO: Update based on current model and connected sites. Add shapes for
-		// connection ends.
 		return Block.createCuboidShape(4.5D, 4.5D, 4.5D, 11.5D, 11.5D, 11.5D);
 	}
 
@@ -56,13 +62,11 @@ public class BlockUniCable extends BlockWithEntity {
 	 */
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hitResult) {
-		BlockEntity tileEntity = world.getBlockEntity(pos);
+		IUniCable cable = UniCableUtils.getCable(world, pos);
 
-		if (!(tileEntity instanceof IUniCable)) {
+		if (cable == null) {
 			return false;
 		}
-
-		IUniCable cable = ((IUniCable) tileEntity);
 
 		ItemStack mainHandStack = player.getMainHandStack();
 
@@ -71,20 +75,35 @@ public class BlockUniCable extends BlockWithEntity {
 				return false;
 			}
 
-			Collection<String> messages = cable.getMessages();
-
-			if (messages != null) {
-				player.addChatMessage(UniModLogger.info("UniCable Details:"), false);
-				messages.forEach(message -> player.addChatMessage(UniModLogger.info(message), false));
-			}
-
+			this.printMessages(cable, player);
 			return true;
 		} else if (mainHandStack.getItem() instanceof IUniWrench) {
-			cable.toggleNextMode();
+			this.toggleCable(cable, world, hitResult.getSide());
 			return true;
 		}
 
 		return false;
+	}
+
+	public void onBroken(IWorld world, BlockPos pos, BlockState state) {
+		for (Direction direction : Direction.values()) {
+			BlockPos neighbourPos = pos.offset(direction);
+			direction = direction.getOpposite();
+
+			IUniCable cable = UniCableUtils.getCable(world, neighbourPos);
+
+			if (cable == null) {
+				continue;
+			}
+
+			UniModProperties.setDirectionState(cable, direction, false);
+		}
+	}
+
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
+			module.onBlockPlaced(world, pos, state);
+		}
 	}
 
 	public boolean emitsRedstonePower(BlockState state) {
@@ -92,9 +111,9 @@ public class BlockUniCable extends BlockWithEntity {
 	}
 
 	public int getWeakRedstonePower(BlockState state, BlockView view, BlockPos pos, Direction direction) {
-		BlockEntity cable = view.getBlockEntity(pos);
+		IUniCable cable = UniCableUtils.getCable(view, pos);
 
-		if (cable instanceof IUniCable) {
+		if (cable != null) {
 			return ((IUniCable) cable).getWeakRedstonePower();
 		}
 
@@ -111,5 +130,46 @@ public class BlockUniCable extends BlockWithEntity {
 		builder.with(UniModProperties.IS_CONNECTED_SOUTH.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_EAST.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_WEST.getProperty());
+
+		ModuleRegistry.UNI_CABLE_MODULES.forEach(module -> module.appendCableProperties(builder));
+	}
+
+	private void initializeDefaultState() {
+		BlockState state = this.getDefaultState();
+
+		state = state.with(UniModProperties.IS_CONNECTED_BOTTOM.getProperty(), false);
+		state = state.with(UniModProperties.IS_CONNECTED_EAST.getProperty(), false);
+		state = state.with(UniModProperties.IS_CONNECTED_NORTH.getProperty(), false);
+		state = state.with(UniModProperties.IS_CONNECTED_SOUTH.getProperty(), false);
+		state = state.with(UniModProperties.IS_CONNECTED_TOP.getProperty(), false);
+		state = state.with(UniModProperties.IS_CONNECTED_WEST.getProperty(), false);
+
+		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
+			state = module.setDefaultProperties(state);
+		}
+
+		this.setDefaultState(state);
+	}
+
+	private void printMessages(IUniCable cable, PlayerEntity player) {
+		Collection<String> messages = cable.getMessages();
+
+		if (messages != null) {
+			player.addChatMessage(UniModLogger.info("UniCable Details:"), false);
+			messages.forEach(message -> player.addChatMessage(UniModLogger.info(message), false));
+		}
+	}
+
+	private void toggleCable(IUniCable cable, World world, Direction side) {
+		IUniCableSide cableSide = cable.getCableSide(side);
+		cableSide.toggleNextMode();
+
+		IUniCable neighbour = UniCableUtils.getCable(world, cable.getPos().offset(side));
+
+		if (neighbour == null) {
+			return;
+		}
+
+		UniModProperties.setDirectionState(neighbour, side.getOpposite(), cableSide.isConnected());
 	}
 }

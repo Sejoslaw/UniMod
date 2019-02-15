@@ -3,9 +3,11 @@ package com.github.sejoslaw.unimod.common;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.common.properties.IModularDirectionProperty;
 import com.github.sejoslaw.unimod.common.properties.ModularDirectionProperty;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.Direction;
 
@@ -45,5 +47,23 @@ public final class UniModProperties {
 		}
 
 		return null;
+	}
+
+	public static boolean isConnected(IUniCable cable, Direction side) {
+		BooleanProperty prop = getConnectionPropertyFromDirection(side);
+		boolean isSideConnected = cable.getBlockState().get(prop);
+		return isSideConnected;
+	}
+
+	public static void setDirectionState(IUniCable cable, Direction side, boolean value) {
+		BooleanProperty prop = getConnectionPropertyFromDirection(side);
+		BlockState state = cable.getBlockState();
+
+		if (state == null) {
+			return;
+		}
+
+		state = state.with(prop, value);
+		cable.setBlockState(state);
 	}
 }

@@ -1,4 +1,4 @@
-package com.github.sejoslaw.unimod.common.tileentities;
+package com.github.sejoslaw.unimod.common.tileentities.unicable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,26 +8,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.github.sejoslaw.unimod.api.enums.EnumTransferMode;
 import com.github.sejoslaw.unimod.api.modules.IUniCableModule;
 import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
-import com.github.sejoslaw.unimod.api.tileentities.IUniCable;
-import com.github.sejoslaw.unimod.common.UniModProperties;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.UniModTileEntities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCable {
-	public static final String TRANSFER_MODE_KEY = "UniMod_TransferMode";
+	public static final String UNI_CABLE_SIDE_KEY = "UniMod_UniCableSide_IsConnected_";
 
 	/**
 	 * Data which passed to modules.
@@ -57,9 +54,6 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 			}
 		}
 
-		// Update block rendering for all connected directions.
-		this.updateRendering(connections);
-
 		// Execute modules logic
 		connections.forEach((direction, moduleSet) -> {
 			moduleSet.forEach(module -> {
@@ -72,12 +66,13 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		return this.data;
 	}
 
-	public EnumTransferMode getCurrentMode() {
-		return (EnumTransferMode) this.data.get(TRANSFER_MODE_KEY);
+	public BlockState getBlockState() {
+		return this.world != null ? this.world.getBlockState(this.pos) : this.getCachedState();
 	}
 
-	public void setCurrentMode(EnumTransferMode mode) {
-		this.data.put(TileEntityUniCable.TRANSFER_MODE_KEY, mode);
+	public void setBlockState(BlockState state) {
+		this.world.setBlockState(this.pos, state);
+		this.world.updateNeighbors(this.pos, state.getBlock());
 	}
 
 	public Collection<String> getMessages() {
@@ -95,18 +90,13 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
-		CompoundTag newTag = super.toTag(tag);
+		super.toTag(tag);
 
 		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
-			module.writeToNBT(this, newTag);
+			module.writeToNBT(this, tag);
 		}
 
-		return newTag;
-	}
-
-	public void toggleNextMode() {
-		EnumTransferMode newMode = this.getCurrentMode().toggleTransfer();
-		this.setCurrentMode(newMode);
+		return tag;
 	}
 
 	public int getWeakRedstonePower() {
@@ -120,28 +110,12 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		return power;
 	}
 
-	/**
-	 * Updates rendering of the current block as well as of neighbours.
-	 */
-	private void updateRendering(Map<Direction, Set<IUniCableModule>> connections) {
-		BlockPos currentPos = this.getPos();
-		BlockState currentState = this.world.getBlockState(currentPos);
-		boolean isDirty = false;
+	public IUniCableSide getCableSide(Direction side) {
+		String key = UNI_CABLE_SIDE_KEY + side.getId();
+		return this.getData().containsKey(key) ? (IUniCableSide) this.getData().get(key) : null;
+	}
 
-		for (Direction direction : Direction.values()) {
-			BooleanProperty prop = UniModProperties.getConnectionPropertyFromDirection(direction);
-
-			boolean isConnected = currentState.get(prop);
-			boolean shouldBeConnected = connections.containsKey(direction);
-
-			if (isConnected != shouldBeConnected) {
-				currentState = currentState.with(prop, shouldBeConnected);
-				isDirty = true;
-			}
-		}
-
-		if (isDirty) {
-			this.world.setBlockState(currentPos, currentState);
-		}
+	public static String getDirectionKey(Direction side) {
+		return UNI_CABLE_SIDE_KEY + side.getId();
 	}
 }

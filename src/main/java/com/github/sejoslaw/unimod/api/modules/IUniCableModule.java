@@ -2,10 +2,15 @@ package com.github.sejoslaw.unimod.api.modules;
 
 import java.util.Collection;
 
-import com.github.sejoslaw.unimod.api.tileentities.IUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.state.StateFactory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 /**
  * Describes a module which can be used as an addon to extend the functionality
@@ -13,8 +18,8 @@ import net.minecraft.util.math.Direction;
  * <br>
  * 
  * By default UniCable is build of these modules: <br>
- * - <b style="color:darkviolet">TransferModeModule</b><br>
- * - <b style="color:lightgreen">ConnectionModule</b><br>
+ * - <b style="color:yellow">ConnectionStateModule</b><br>
+ * - <b style="color:lightgreen">CableConnectionModule</b><br>
  * - <b style="color:green">ItemTransportModule</b><br>
  * - <b style="color:#4286f4">FluidTransportModule</b><br>
  * - <b style="color:red">RedstoneSignalTransportModule</b><br>
@@ -66,5 +71,24 @@ public interface IUniCableModule {
 	 */
 	default int getWeakRedstonePower(IUniCable cable) {
 		return 0;
+	}
+
+	/**
+	 * Appends additional properties into UniCable block builder.
+	 */
+	default void appendCableProperties(StateFactory.Builder<Block, BlockState> builder) {
+	}
+
+	/**
+	 * @return Returns the state with default properties.
+	 */
+	default BlockState setDefaultProperties(BlockState state) {
+		return state;
+	}
+
+	/**
+	 * Executes after the UniCable has been placed on World.
+	 */
+	default void onBlockPlaced(World world, BlockPos pos, BlockState state) {
 	}
 }

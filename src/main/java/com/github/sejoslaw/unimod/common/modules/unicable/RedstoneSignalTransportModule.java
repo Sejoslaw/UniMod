@@ -3,9 +3,8 @@ package com.github.sejoslaw.unimod.common.modules.unicable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.github.sejoslaw.unimod.api.enums.EnumTransferMode;
 import com.github.sejoslaw.unimod.api.modules.IUniCableModule;
-import com.github.sejoslaw.unimod.api.tileentities.IUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -19,7 +18,16 @@ import net.minecraft.world.World;
 public final class RedstoneSignalTransportModule implements IUniCableModule {
 	private static final String REDSTONE_POWER_DATA_KEY = "UniMod_RedstonePower";
 
+	public void initialize(IUniCable cable) {
+		cable.getData().put(REDSTONE_POWER_DATA_KEY, 0);
+	}
+
 	public boolean canConnect(IUniCable cable, Direction direction) {
+		if (!cable.getCableSide(direction).isConnected()) {
+			cable.getData().put(REDSTONE_POWER_DATA_KEY, 0);
+			return false;
+		}
+
 		World world = cable.getWorld();
 		BlockPos cablePos = cable.getPos();
 		BlockPos sourcePos = cablePos.offset(direction);
@@ -32,11 +40,6 @@ public final class RedstoneSignalTransportModule implements IUniCableModule {
 
 		if (sourceEntity instanceof IUniCable) {
 			return ((IUniCable) sourceEntity).getData().containsKey(REDSTONE_POWER_DATA_KEY);
-		}
-
-		if (cable.getCurrentMode() == EnumTransferMode.DISCONNECTED) {
-			cable.getData().put(REDSTONE_POWER_DATA_KEY, 0);
-			return false;
 		}
 
 		return false;
@@ -55,6 +58,7 @@ public final class RedstoneSignalTransportModule implements IUniCableModule {
 	}
 
 	public int getWeakRedstonePower(IUniCable cable) {
+		// In case if someone removes the key from data map.
 		if (cable.getData().containsKey(REDSTONE_POWER_DATA_KEY)) {
 			return (int) cable.getData().get(REDSTONE_POWER_DATA_KEY);
 		}
@@ -78,11 +82,7 @@ public final class RedstoneSignalTransportModule implements IUniCableModule {
 	}
 
 	private String getRedstonePowerMessage(IUniCable cable) {
-		if (!cable.getData().containsKey(REDSTONE_POWER_DATA_KEY)) {
-			return null;
-		}
-
-		int power = (int) cable.getData().get(REDSTONE_POWER_DATA_KEY);
+		int power = this.getWeakRedstonePower(cable);
 
 		if (power > 0) {
 			return "Redstone Power: " + power;
