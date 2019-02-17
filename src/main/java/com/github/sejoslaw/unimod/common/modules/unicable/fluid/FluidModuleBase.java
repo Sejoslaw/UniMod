@@ -9,6 +9,7 @@ import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
@@ -16,18 +17,14 @@ import net.minecraft.util.registry.Registry;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public abstract class FluidModuleBase implements IUniCableTogglableModule {
-	public Collection<String> getMessages(IUniCable cable) {
+	public Collection<String> getMessages(IUniCable cable, Direction side, ItemStack stack) {
 		Stack<String> messages = new Stack<>();
 
-		for (Direction side : Direction.values()) {
-			this.filterMessages(cable, side, messages);
-		}
+		this.filterMessages(cable, side, messages);
 
 		if (messages.isEmpty()) {
 			return null;
 		}
-
-		messages.push(this.getMessagesTopic());
 
 		Collection<String> list = new ArrayList<>();
 
@@ -47,6 +44,4 @@ public abstract class FluidModuleBase implements IUniCableTogglableModule {
 	}
 
 	public abstract void filterMessages(IUniCable cable, Direction side, Stack<String> messages);
-
-	protected abstract String getMessagesTopic();
 }

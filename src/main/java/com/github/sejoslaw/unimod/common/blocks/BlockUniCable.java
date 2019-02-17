@@ -23,8 +23,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.VerticalEntityPosition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.block.AirBlockItem;
 import net.minecraft.state.StateFactory;
+import net.minecraft.text.Style;
+import net.minecraft.text.TextFormat;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -70,17 +71,18 @@ public class BlockUniCable extends BlockWithEntity {
 			return false;
 		}
 
+		Direction side = hitResult.getSide();
 		ItemStack mainHandStack = player.getMainHandStack();
 
-		if (mainHandStack.getItem() instanceof AirBlockItem) {
+		if (mainHandStack.isEmpty()) {
 			if (!player.world.isClient) {
 				return false;
 			}
 
-			this.printMessages(cable, player);
+			this.printMessages(cable, player, side, mainHandStack);
 			return true;
 		} else if (mainHandStack.getItem() instanceof IUniWrench) {
-			this.toggleCable(cable, world, hitResult.getSide());
+			this.toggleCable(cable, world, side, mainHandStack);
 			return true;
 		}
 
@@ -167,18 +169,31 @@ public class BlockUniCable extends BlockWithEntity {
 		this.setDefaultState(state);
 	}
 
-	private void printMessages(IUniCable cable, PlayerEntity player) {
-		Collection<String> messages = cable.getMessages();
+	private void printMessages(IUniCable cable, PlayerEntity player, Direction side, ItemStack stack) {
+		Collection<String> messages = cable.getMessages(side, stack);
 
-		if (messages != null) {
-			player.addChatMessage(UniModLogger.info("---=== UniCable Details ===---"), false);
-			messages.forEach(message -> player.addChatMessage(UniModLogger.info(message), false));
+		if (messages == null || messages.size() <= 0) {
+			return;
 		}
+
+		String messagesHeader = "---=== UniCable Details (Side: " + side.getName().toUpperCase() + ") ===---";
+		Style messageHeaderStyle = new Style().setColor(TextFormat.AQUA);
+		messagesHeader = UniModLogger.styleText(messagesHeader, messageHeaderStyle).getFormattedText();
+
+		player.addChatMessage(UniModLogger.info(messagesHeader), false);
+
+		messages.forEach(message -> player.addChatMessage(UniModLogger.info(message), false));
 	}
 
-	private void toggleCable(IUniCable cable, World world, Direction side) {
+	private void toggleCable(IUniCable cable, World world, Direction side, ItemStack stack) {
+		String currentGroup = "";
+
+		if (stack.getItem() instanceof IUniWrench) {
+			currentGroup = ((IUniWrench) stack.getItem()).getModuleGroup(stack);
+		}
+
 		IUniCableSide cableSide = cable.getCableSide(side);
-		cableSide.toggleNextMode();
+		cableSide.toggleNextMode(currentGroup);
 
 		IUniCable neighbour = UniCableUtils.getCable(world, cable.getPos().offset(side));
 
@@ -186,6 +201,7 @@ public class BlockUniCable extends BlockWithEntity {
 			return;
 		}
 
-		UniModProperties.setDirectionState(neighbour, side.getOpposite(), cableSide.isConnected());
+		UniModProperties.setDirectionState(neighbour, side.getOpposite(),
+				!UniModProperties.isConnected(neighbour, side.getOpposite()));
 	}
 }

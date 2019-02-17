@@ -37,17 +37,31 @@ public class ItemUniwrench extends Item implements IUniWrench {
 	public TextComponent getTranslatedNameTrimmed(ItemStack stack) {
 		TextComponent currentName = super.getTranslatedNameTrimmed(stack);
 		String itemName = currentName.getFormattedText();
+		String moduleGroupName = this.getModuleGroup(stack);
 
-		String moduleGroupName = this.getCurrentModuleGroupName(stack);
-		moduleGroupName = " [" + moduleGroupName + "]";
-
-		if (!moduleGroupName.contains("[]")) {
-			// itemName += " [" + moduleGroupName + "]";
-			itemName += UniModLogger.styleText(moduleGroupName, new Style().setColor(TextFormat.GOLD))
-					.getFormattedText();
+		if (!moduleGroupName.equals("")) {
+			moduleGroupName = " [" + moduleGroupName + "]";
+			Style modelGroupStyle = new Style().setColor(TextFormat.GOLD);
+			itemName += UniModLogger.styleText(moduleGroupName, modelGroupStyle).getFormattedText();
 		}
 
 		return new StringTextComponent(itemName);
+	}
+
+	public String getModuleGroup(ItemStack stack) {
+		CompoundTag tag = stack.getTag();
+
+		if (tag == null || !tag.containsKey(CURRENT_MODULE_GROUP_NAME_KEY)) {
+			return "";
+		}
+
+		int currentGroupId = tag.getInt(CURRENT_MODULE_GROUP_NAME_KEY);
+
+		if (currentGroupId == ModuleRegistry.UNI_CABLE_MODULES.size()) {
+			return "";
+		}
+
+		return ModuleRegistry.UNI_CABLE_MODULES.keySet().toArray()[currentGroupId].toString();
 	}
 
 	private void setNextModuleGroupName(World world, ItemStack stack) {
@@ -65,21 +79,5 @@ public class ItemUniwrench extends Item implements IUniWrench {
 		}
 
 		tag.putInt(CURRENT_MODULE_GROUP_NAME_KEY, currentGroupId);
-	}
-
-	private String getCurrentModuleGroupName(ItemStack stack) {
-		CompoundTag tag = stack.getTag();
-
-		if (tag == null || !tag.containsKey(CURRENT_MODULE_GROUP_NAME_KEY)) {
-			return "";
-		}
-
-		int currentGroupId = tag.getInt(CURRENT_MODULE_GROUP_NAME_KEY);
-
-		if (currentGroupId == ModuleRegistry.UNI_CABLE_MODULES.size()) {
-			return "";
-		}
-
-		return ModuleRegistry.UNI_CABLE_MODULES.keySet().toArray()[currentGroupId].toString();
 	}
 }

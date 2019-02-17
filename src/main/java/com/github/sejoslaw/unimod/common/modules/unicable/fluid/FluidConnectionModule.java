@@ -45,10 +45,6 @@ public class FluidConnectionModule extends FluidModuleBase {
 			return;
 		}
 
-		messages.push(" - " + side.getName().toUpperCase() + ": " + this.getFluidFullName(fluidState.getFluid()));
-	}
-
-	protected String getMessagesTopic() {
-		return "Found Fluids:";
+		messages.push("Found Fluid: " + this.getFluidFullName(fluidState.getFluid()));
 	}
 }

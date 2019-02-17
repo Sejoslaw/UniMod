@@ -38,10 +38,6 @@ public final class FluidStorageModule extends FluidModuleBase {
 			messages.push(" -- " + fluidName + " = " + fluidEntry.getValue());
 		}
 
-		messages.push(" - " + side.getName().toUpperCase() + ":");
-	}
-
-	protected String getMessagesTopic() {
-		return "Stored Fluids: (MAX: " + Long.MAX_VALUE + ")";
+		messages.push("Stored Fluids: (MAX: 9 Quintillion Buckets Each)"); // Long.MAX_VALUE
 	}
 }

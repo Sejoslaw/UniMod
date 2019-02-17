@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.github.sejoslaw.unimod.api.items.IUniWrench;
 import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
 import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
@@ -17,6 +17,7 @@ import com.github.sejoslaw.unimod.common.UniModTileEntities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
@@ -75,7 +76,7 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	}
 
 	public BlockState getBlockState() {
-		return this.world != null ? this.world.getBlockState(this.pos) : null;
+		return this.world.getBlockState(this.pos);
 	}
 
 	public void setBlockState(BlockState state) {
@@ -83,17 +84,23 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		this.world.updateNeighbors(this.pos, state.getBlock());
 	}
 
-	public Collection<String> getMessages() {
-		List<String> messages = new ArrayList<>();
+	public Collection<String> getMessages(Direction side, ItemStack stack) {
+		Collection<String> messages = new ArrayList<>();
 
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
-				Collection<String> moduleMessages = module.getMessages(this);
+		String currentGroup = "";
 
-				if (moduleMessages != null && !moduleMessages.isEmpty()) {
-					messages.addAll(moduleMessages);
-				}
+		if (stack.getItem() instanceof IUniWrench) {
+			currentGroup = ((IUniWrench) stack.getItem()).getModuleGroup(stack);
+		}
+
+		// Process for all module groups.
+		if (currentGroup.equals("")) {
+			for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
+				this.filterMessages(side, stack, messages, entry.getValue());
 			}
+		} else {
+			Set<IUniCableModule> modules = ModuleRegistry.UNI_CABLE_MODULES.get(currentGroup);
+			this.filterMessages(side, stack, messages, modules);
 		}
 
 		return messages;
@@ -122,6 +129,10 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	}
 
 	public int getWeakRedstonePower(Direction side) {
+		if (this.world == null) {
+			return 0;
+		}
+
 		int power = 0;
 
 		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
@@ -144,6 +155,17 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 
 	private Object getFromKey(String key) {
 		return this.getData().containsKey(key) ? this.getData().get(key) : null;
+	}
+
+	private void filterMessages(Direction side, ItemStack stack, Collection<String> messages,
+			Set<IUniCableModule> modules) {
+		for (IUniCableModule module : modules) {
+			Collection<String> moduleMessages = module.getMessages(this, side, stack);
+
+			if (moduleMessages != null && !moduleMessages.isEmpty()) {
+				messages.addAll(moduleMessages);
+			}
+		}
 	}
 
 	public static String getDirectionKey(Direction side) {

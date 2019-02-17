@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -43,7 +44,7 @@ public interface IUniCable {
 	/**
 	 * @return Returns all messages which should be added into Player's chat.
 	 */
-	Collection<String> getMessages();
+	Collection<String> getMessages(Direction side, ItemStack stack);
 
 	/**
 	 * @return Returns the Redstone Power of the current cable.

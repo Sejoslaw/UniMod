@@ -2,12 +2,14 @@ package com.github.sejoslaw.unimod.common.modules.unicable.fluid;
 
 import java.util.Collection;
 
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableTogglableModule;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -21,12 +23,12 @@ public class FluidInputModule extends FluidConnectionModule {
 	public void onBlockPlaced(IUniCable cable, World world, BlockPos pos, BlockState state) {
 	}
 
-	public Collection<String> getMessages(IUniCable cable) {
+	public Collection<String> getMessages(IUniCable cable, Direction side, ItemStack stack) {
 		return null;
 	}
 
 	public void transmit(IUniCable cable, Direction direction) {
-		if (!cable.getCableSide(direction).isConnected()) {
+		if (!cable.getCableSide(direction).isConnected(IUniCableTogglableModule.MODULE_GROUP_FLUIDS_KEY)) {
 			return;
 		}
 

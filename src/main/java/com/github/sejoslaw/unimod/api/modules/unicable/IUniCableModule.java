@@ -6,6 +6,7 @@ import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.StateFactory;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +29,7 @@ public interface IUniCableModule {
 	/**
 	 * @return Returns all messages which should be added into Player's chat.
 	 */
-	default Collection<String> getMessages(IUniCable cable) {
+	default Collection<String> getMessages(IUniCable cable, Direction side, ItemStack stack) {
 		return null;
 	}
 

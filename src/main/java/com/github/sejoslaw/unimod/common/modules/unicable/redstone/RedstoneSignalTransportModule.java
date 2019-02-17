@@ -8,6 +8,7 @@ import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.common.UniModProperties;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -33,7 +34,7 @@ public final class RedstoneSignalTransportModule implements IUniCableTogglableMo
 	public boolean canConnect(IUniCable cable, Direction direction) {
 		this.initialize(cable);
 
-		if (!cable.getCableSide(direction).isConnected()) {
+		if (!cable.getCableSide(direction).isConnected(IUniCableTogglableModule.MODULE_GROUP_REDSTONE_KEY)) {
 			return false;
 		}
 
@@ -46,7 +47,7 @@ public final class RedstoneSignalTransportModule implements IUniCableTogglableMo
 
 		int receivedPower = 0;
 
-		if (cable.getCableSide(direction).isConnected()) {
+		if (cable.getCableSide(direction).isConnected(IUniCableTogglableModule.MODULE_GROUP_REDSTONE_KEY)) {
 			receivedPower = world.getEmittedRedstonePower(cablePos.offset(direction), direction.getOpposite());
 		}
 
@@ -56,7 +57,7 @@ public final class RedstoneSignalTransportModule implements IUniCableTogglableMo
 	}
 
 	public int getWeakRedstonePower(IUniCable cable, Direction side) {
-		if (!cable.getCableSide(side.getOpposite()).isConnected()) {
+		if (!cable.getCableSide(side.getOpposite()).isConnected(IUniCableTogglableModule.MODULE_GROUP_REDSTONE_KEY)) {
 			return 0;
 		}
 
@@ -67,11 +68,11 @@ public final class RedstoneSignalTransportModule implements IUniCableTogglableMo
 		return 0;
 	}
 
-	public Collection<String> getMessages(IUniCable cable) {
+	public Collection<String> getMessages(IUniCable cable, Direction side, ItemStack stack) {
 		Collection<String> messages = new ArrayList<>();
 
 		this.addMessage(cable, messages, this.getRedstonePowerMessage(cable));
-		this.addMessage(cable, messages, this.getRedstoneSourcesMessage(cable));
+		this.addMessage(cable, messages, this.getRedstoneSourcesMessage(cable, side));
 
 		return messages;
 	}
@@ -92,23 +93,7 @@ public final class RedstoneSignalTransportModule implements IUniCableTogglableMo
 		return null;
 	}
 
-	private String getRedstoneSourcesMessage(IUniCable cable) {
-		boolean hasAny = false;
-		String message = "Redstone Sources: [ ";
-
-		for (Direction direction : Direction.values()) {
-			if (this.canConnect(cable, direction)) {
-				message += direction.getName() + " ";
-				hasAny = true;
-			}
-		}
-
-		message += "]";
-
-		if (hasAny) {
-			return message;
-		}
-
-		return null;
+	private String getRedstoneSourcesMessage(IUniCable cable, Direction side) {
+		return this.canConnect(cable, side) ? "Found Redstone source." : null;
 	}
 }

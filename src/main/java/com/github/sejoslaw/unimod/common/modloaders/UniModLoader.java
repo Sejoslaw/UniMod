@@ -11,7 +11,7 @@ import com.github.sejoslaw.unimod.common.modules.unicable.fluid.FluidConnectionM
 import com.github.sejoslaw.unimod.common.modules.unicable.fluid.FluidInputModule;
 import com.github.sejoslaw.unimod.common.modules.unicable.fluid.FluidStorageModule;
 import com.github.sejoslaw.unimod.common.modules.unicable.general.CableConnectionModule;
-import com.github.sejoslaw.unimod.common.modules.unicable.general.ConnectionStateModule;
+import com.github.sejoslaw.unimod.common.modules.unicable.general.ModuleGroupsInformationModule;
 import com.github.sejoslaw.unimod.common.modules.unicable.redstone.RedstoneSignalTransportModule;
 import com.github.sejoslaw.unimod.core.UniModItemGroup;
 import com.github.sejoslaw.unimod.core.UniModNames;
@@ -53,8 +53,8 @@ public final class UniModLoader {
 
 	private static void initUniCableModules() {
 		// UniCable general modules
-		ModuleRegistry.addUniCableModule(new ConnectionStateModule());
 		ModuleRegistry.addUniCableModule(new CableConnectionModule());
+		ModuleRegistry.addUniCableModule(new ModuleGroupsInformationModule());
 
 		// Redstone-related modules
 		ModuleRegistry.addUniCableTogglableModule(MODULE_GROUP_REDSTONE_KEY, new RedstoneSignalTransportModule());
