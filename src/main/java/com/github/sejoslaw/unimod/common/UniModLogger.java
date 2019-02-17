@@ -17,6 +17,11 @@ public final class UniModLogger {
 	private UniModLogger() {
 	}
 
+	public static TextComponent styleText(String message, Style style) {
+		TextComponent prefixComp = new StringTextComponent(message);
+		return TextFormatter.addStyle(prefixComp, style);
+	}
+
 	public static TextComponent info(String message) {
 		return formatMessage("[INFO] ", message, new Style().setColor(TextFormat.GREEN));
 	}
@@ -36,10 +41,5 @@ public final class UniModLogger {
 
 	private static TextComponent getModNamePrefix() {
 		return styleText(MOD_PREFIX + " ", new Style().setColor(TextFormat.GOLD));
-	}
-
-	private static TextComponent styleText(String message, Style style) {
-		TextComponent prefixComp = new StringTextComponent(message);
-		return TextFormatter.addStyle(prefixComp, style);
 	}
 }

@@ -51,7 +51,13 @@ public final class UniModProperties {
 
 	public static boolean isConnected(IUniCable cable, Direction side) {
 		BooleanProperty prop = getConnectionPropertyFromDirection(side);
-		boolean isSideConnected = cable.getBlockState().get(prop);
+		BlockState cableState = cable.getBlockState();
+
+		if (cableState == null) {
+			return false;
+		}
+
+		boolean isSideConnected = cableState.get(prop);
 		return isSideConnected;
 	}
 

@@ -54,4 +54,9 @@ public interface IUniCable {
 	 * @return Returns the UniCable data for the specified side.
 	 */
 	IUniCableSide getCableSide(Direction side);
+
+	/**
+	 * @return Returns the fluid storage coresponded to the given side.
+	 */
+	IUniCableFluidStorage getFluidStorage(Direction side);
 }

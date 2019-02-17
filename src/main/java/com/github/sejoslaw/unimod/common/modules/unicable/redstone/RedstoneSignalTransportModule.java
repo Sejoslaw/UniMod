@@ -1,9 +1,9 @@
-package com.github.sejoslaw.unimod.common.modules.unicable;
+package com.github.sejoslaw.unimod.common.modules.unicable.redstone;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.github.sejoslaw.unimod.api.modules.IUniCableModule;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableTogglableModule;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.common.UniModProperties;
 
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public final class RedstoneSignalTransportModule implements IUniCableModule {
+public final class RedstoneSignalTransportModule implements IUniCableTogglableModule {
 	private static final String REDSTONE_POWER_DATA_KEY = "UniMod_RedstonePower";
 
 	public void onBlockPlaced(IUniCable cable, World world, BlockPos pos, BlockState state) {

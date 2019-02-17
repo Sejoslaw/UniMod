@@ -11,8 +11,8 @@ import net.minecraft.util.math.Direction;
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
 public final class UniCableSide implements IUniCableSide {
-	private IUniCable cable;
-	private Direction direction;
+	private final IUniCable cable;
+	private final Direction direction;
 
 	public UniCableSide(IUniCable cable, Direction direction) {
 		this.cable = cable;

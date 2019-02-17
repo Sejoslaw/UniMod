@@ -2,7 +2,7 @@
     "id": "unimod",
     "name": "UniMod",
     "description": "Mod which add various useful things which are not that useful.",
-    "version": "0.1.0",
+    "version": "${version}",
     "side": "universal",
     "initializers": [
         "com.github.sejoslaw.unimod.common.modloaders.fabric.UniMod"

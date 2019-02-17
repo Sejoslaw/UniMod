@@ -1,4 +1,4 @@
-package com.github.sejoslaw.unimod.api.modules;
+package com.github.sejoslaw.unimod.api.modules.unicable;
 
 import java.util.Collection;
 
@@ -14,15 +14,7 @@ import net.minecraft.world.World;
 
 /**
  * Describes a module which can be used as an addon to extend the functionality
- * of a UniCable. <br>
- * <br>
- * 
- * By default UniCable is build of these modules: <br>
- * - <b style="color:yellow">ConnectionStateModule</b><br>
- * - <b style="color:lightgreen">CableConnectionModule</b><br>
- * - <b style="color:green">ItemTransportModule</b><br>
- * - <b style="color:#4286f4">FluidTransportModule</b><br>
- * - <b style="color:red">RedstoneSignalTransportModule</b><br>
+ * of a UniCable.
  * 
  * @author Sejoslaw - https://github.com/Sejoslaw
  */

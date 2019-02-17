@@ -1,9 +1,11 @@
 package com.github.sejoslaw.unimod.common.blocks;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import com.github.sejoslaw.unimod.api.items.IUniWrench;
-import com.github.sejoslaw.unimod.api.modules.IUniCableModule;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
 import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
@@ -107,8 +109,10 @@ public class BlockUniCable extends BlockWithEntity {
 			return;
 		}
 
-		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
-			module.onBlockPlaced(cable, world, pos, state);
+		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
+			for (IUniCableModule module : entry.getValue()) {
+				module.onBlockPlaced(cable, world, pos, state);
+			}
 		}
 	}
 
@@ -137,7 +141,11 @@ public class BlockUniCable extends BlockWithEntity {
 		builder.with(UniModProperties.IS_CONNECTED_EAST.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_WEST.getProperty());
 
-		ModuleRegistry.UNI_CABLE_MODULES.forEach(module -> module.appendCableProperties(builder));
+		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
+			for (IUniCableModule module : entry.getValue()) {
+				module.appendCableProperties(builder);
+			}
+		}
 	}
 
 	private void initializeDefaultState() {
@@ -150,8 +158,10 @@ public class BlockUniCable extends BlockWithEntity {
 		state = state.with(UniModProperties.IS_CONNECTED_TOP.getProperty(), false);
 		state = state.with(UniModProperties.IS_CONNECTED_WEST.getProperty(), false);
 
-		for (IUniCableModule module : ModuleRegistry.UNI_CABLE_MODULES) {
-			state = module.setDefaultProperties(state);
+		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
+			for (IUniCableModule module : entry.getValue()) {
+				state = module.setDefaultProperties(state);
+			}
 		}
 
 		this.setDefaultState(state);

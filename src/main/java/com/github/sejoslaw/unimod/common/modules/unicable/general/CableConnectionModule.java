@@ -1,9 +1,9 @@
-package com.github.sejoslaw.unimod.common.modules.unicable;
+package com.github.sejoslaw.unimod.common.modules.unicable.general;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.github.sejoslaw.unimod.api.modules.IUniCableModule;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.common.UniModProperties;
 import com.github.sejoslaw.unimod.common.utils.UniCableUtils;
