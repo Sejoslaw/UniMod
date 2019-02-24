@@ -8,9 +8,9 @@ import com.github.sejoslaw.unimod.api.items.IUniWrench;
 import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
 import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
-import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.UniModLogger;
 import com.github.sejoslaw.unimod.common.UniModProperties;
+import com.github.sejoslaw.unimod.common.modloaders.UniModLoader;
 import com.github.sejoslaw.unimod.common.tileentities.unicable.TileEntityUniCable;
 import com.github.sejoslaw.unimod.common.utils.UniCableUtils;
 
@@ -58,11 +58,6 @@ public class BlockUniCable extends BlockWithEntity {
 		return BlockRenderType.MODEL;
 	}
 
-	// TODO: Fix after Minecraft can process Shift-Clicking.
-	/**
-	 * Everything with IUniWrench: - Right-Click -> show info - Shift-Right-Click ->
-	 * toggle mode
-	 */
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hitResult) {
 		IUniCable cable = UniCableUtils.getCable(world, pos);
@@ -82,7 +77,7 @@ public class BlockUniCable extends BlockWithEntity {
 			this.printMessages(cable, player, side, mainHandStack);
 			return true;
 		} else if (mainHandStack.getItem() instanceof IUniWrench) {
-			this.toggleCable(cable, world, side, mainHandStack);
+			UniModLoader.INSTANCE.openContainer(player, cable);
 			return true;
 		}
 
@@ -100,7 +95,7 @@ public class BlockUniCable extends BlockWithEntity {
 				continue;
 			}
 
-			UniModProperties.setDirectionState(cable, direction, false);
+			UniModProperties.setDirectionState(cable.getCableSide(direction), false);
 		}
 	}
 
@@ -132,9 +127,6 @@ public class BlockUniCable extends BlockWithEntity {
 		return 0;
 	}
 
-	/**
-	 * Add properties.
-	 */
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		builder.with(UniModProperties.IS_CONNECTED_TOP.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_BOTTOM.getProperty());
@@ -142,12 +134,6 @@ public class BlockUniCable extends BlockWithEntity {
 		builder.with(UniModProperties.IS_CONNECTED_SOUTH.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_EAST.getProperty());
 		builder.with(UniModProperties.IS_CONNECTED_WEST.getProperty());
-
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
-				module.appendCableProperties(builder);
-			}
-		}
 	}
 
 	private void initializeDefaultState() {
@@ -159,12 +145,6 @@ public class BlockUniCable extends BlockWithEntity {
 		state = state.with(UniModProperties.IS_CONNECTED_SOUTH.getProperty(), false);
 		state = state.with(UniModProperties.IS_CONNECTED_TOP.getProperty(), false);
 		state = state.with(UniModProperties.IS_CONNECTED_WEST.getProperty(), false);
-
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
-				state = module.setDefaultProperties(state);
-			}
-		}
 
 		this.setDefaultState(state);
 	}
@@ -183,25 +163,5 @@ public class BlockUniCable extends BlockWithEntity {
 		player.addChatMessage(UniModLogger.info(messagesHeader), false);
 
 		messages.forEach(message -> player.addChatMessage(UniModLogger.info(message), false));
-	}
-
-	private void toggleCable(IUniCable cable, World world, Direction side, ItemStack stack) {
-		String currentGroup = "";
-
-		if (stack.getItem() instanceof IUniWrench) {
-			currentGroup = ((IUniWrench) stack.getItem()).getModuleGroup(stack);
-		}
-
-		IUniCableSide cableSide = cable.getCableSide(side);
-		cableSide.toggleNextMode(currentGroup);
-
-		IUniCable neighbour = UniCableUtils.getCable(world, cable.getPos().offset(side));
-
-		if (neighbour == null) {
-			return;
-		}
-
-		UniModProperties.setDirectionState(neighbour, side.getOpposite(),
-				!UniModProperties.isConnected(neighbour, side.getOpposite()));
 	}
 }

@@ -17,6 +17,9 @@ public final class UniModNames {
 	public static final String ITEM_GROUP_NAME = "unimod_group";
 	public static final Identifier ITEM_GROUP_ID = new Identifier(UniModCore.MOD_ID, ITEM_GROUP_NAME);
 
+	public static final String UNI_CABLE_CONTAINER = "textures/gui/container/unicable.png";
+	public static final Identifier UNI_CABLE_CONTAINER_ID = new Identifier(UniModCore.MOD_ID, UNI_CABLE_CONTAINER);
+
 	private UniModNames() {
 	}
 }

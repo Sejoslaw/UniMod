@@ -1,6 +1,8 @@
-package com.github.sejoslaw.unimod.api.tileentities.unicable;
+package com.github.sejoslaw.unimod.api.tileentities.unicable.fluid;
 
 import java.util.Map;
+
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.Direction;

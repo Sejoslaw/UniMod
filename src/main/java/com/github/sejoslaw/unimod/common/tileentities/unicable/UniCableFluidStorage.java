@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
-import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableFluidStorage;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.fluid.IUniCableFluidStorage;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.Direction;

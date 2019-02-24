@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
-import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableTogglableModule;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public abstract class FluidModuleBase implements IUniCableTogglableModule {
-	public Collection<String> getMessages(IUniCable cable, Direction side, ItemStack stack) {
+public abstract class FluidModuleBase implements IUniCableModule {
+	public Collection<String> getMessages(IUniCableSide side, ItemStack stack) {
 		Stack<String> messages = new Stack<>();
 
-		this.filterMessages(cable, side, messages);
+		this.filterMessages(side, messages);
 
 		if (messages.isEmpty()) {
 			return null;
@@ -39,9 +39,10 @@ public abstract class FluidModuleBase implements IUniCableTogglableModule {
 		return Registry.FLUID.getId(fluid).toString();
 	}
 
-	protected FluidState getFluidState(IUniCable cable, Direction side) {
-		return cable.getWorld().getFluidState(cable.getPos().offset(side));
+	protected FluidState getFluidState(IUniCableSide side) {
+		IUniCable cable = side.getCable();
+		return cable.getWorld().getFluidState(cable.getPos().offset(side.getSide()));
 	}
 
-	public abstract void filterMessages(IUniCable cable, Direction side, Stack<String> messages);
+	public abstract void filterMessages(IUniCableSide side, Stack<String> messages);
 }

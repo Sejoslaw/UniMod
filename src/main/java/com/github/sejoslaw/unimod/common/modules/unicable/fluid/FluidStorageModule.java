@@ -4,8 +4,9 @@ import java.util.Map;
 import java.util.Stack;
 
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
-import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableFluidStorage;
-import com.github.sejoslaw.unimod.common.tileentities.unicable.TileEntityUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.fluid.IUniCableFluidStorage;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.fluid.UniCableFluidAPI;
 import com.github.sejoslaw.unimod.common.tileentities.unicable.UniCableFluidStorage;
 
 import net.minecraft.fluid.Fluid;
@@ -20,14 +21,14 @@ import net.minecraft.util.math.Direction;
 public final class FluidStorageModule extends FluidModuleBase {
 	public void initialize(IUniCable cable) {
 		for (Direction side : Direction.values()) {
-			String key = TileEntityUniCable.getFluidStorageKey(side);
+			String key = UniCableFluidAPI.getFluidStorageKey(side);
 			IUniCableFluidStorage fluidStorage = new UniCableFluidStorage(cable, side);
 			cable.getData().put(key, fluidStorage);
 		}
 	}
 
-	public void filterMessages(IUniCable cable, Direction side, Stack<String> messages) {
-		IUniCableFluidStorage fluidStorage = cable.getFluidStorage(side);
+	public void filterMessages(IUniCableSide side, Stack<String> messages) {
+		IUniCableFluidStorage fluidStorage = UniCableFluidAPI.getFluidStorage(side);
 
 		if (fluidStorage.getStoredFluids().isEmpty()) {
 			return;

@@ -4,5 +4,6 @@
     "language.code": "en_us",
     "block.unimod.unicable": "UniCable",
     "item.unimod.uniwrench": "UniWrench",
-    "itemGroup.unimod.unimod_group": "UniMod"
+    "itemGroup.unimod.unimod_group": "UniMod",
+    "container.unimod.unicable": "UniCable"
 }

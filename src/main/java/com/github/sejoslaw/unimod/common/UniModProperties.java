@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.properties.IModularDirectionProperty;
 import com.github.sejoslaw.unimod.common.properties.ModularDirectionProperty;
 
@@ -49,9 +50,9 @@ public final class UniModProperties {
 		return null;
 	}
 
-	public static boolean isConnected(IUniCable cable, Direction side) {
-		BooleanProperty prop = getConnectionPropertyFromDirection(side);
-		BlockState cableState = cable.getBlockState();
+	public static boolean isConnected(IUniCableSide cableSide) {
+		BooleanProperty prop = getConnectionPropertyFromDirection(cableSide.getSide());
+		BlockState cableState = cableSide.getCable().getBlockState();
 
 		if (cableState == null) {
 			return false;
@@ -61,8 +62,13 @@ public final class UniModProperties {
 		return isSideConnected;
 	}
 
-	public static void setDirectionState(IUniCable cable, Direction side, boolean value) {
-		BooleanProperty prop = getConnectionPropertyFromDirection(side);
+	public static void setDirectionState(IUniCableSide cableSide, boolean value) {
+		if (cableSide == null) {
+			return;
+		}
+
+		IUniCable cable = cableSide.getCable();
+		BooleanProperty prop = getConnectionPropertyFromDirection(cableSide.getSide());
 		BlockState state = cable.getBlockState();
 
 		if (state == null) {

@@ -19,14 +19,13 @@ public interface IUniCableSide {
 	Direction getSide();
 
 	/**
-	 * Used to toggle next mode of the current cable. For toggling all the groups
-	 * pass empty string ("") as an argument.
+	 * @return Indicates if the current cable can connect to anything at current
+	 *         side.
 	 */
-	void toggleNextMode(String moduleGroupName);
+	boolean isConnected();
 
 	/**
-	 * @return Indicates if the current cable can connect to anything. For checking
-	 *         all the modules, pass empty string ("") as an argument.
+	 * Forces UniCableSide to update properties.
 	 */
-	boolean isConnected(String moduleGroupName);
+	void updateConnections();
 }

@@ -3,14 +3,12 @@ package com.github.sejoslaw.unimod.api.modules.unicable;
 import java.util.Collection;
 
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
+import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.state.StateFactory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 /**
@@ -29,22 +27,20 @@ public interface IUniCableModule {
 	/**
 	 * @return Returns all messages which should be added into Player's chat.
 	 */
-	default Collection<String> getMessages(IUniCable cable, Direction side, ItemStack stack) {
+	default Collection<String> getMessages(IUniCableSide cableSide, ItemStack stack) {
 		return null;
 	}
 
 	/**
-	 * @return Returns true if the given cable connect to a block on a given
-	 *         direction; otherwise false.
+	 * Inputs X on specified side.
 	 */
-	default boolean canConnect(IUniCable cable, Direction direction) {
-		return false;
+	default void input(IUniCableSide cableSide) {
 	}
 
 	/**
-	 * Transmits X into / from specified direction.
+	 * Outputs X on specified side.
 	 */
-	default void transmit(IUniCable cable, Direction direction) {
+	default void output(IUniCableSide cableSide) {
 	}
 
 	/**
@@ -62,21 +58,8 @@ public interface IUniCableModule {
 	/**
 	 * @return Returns the Redstone Power that the module can create.
 	 */
-	default int getWeakRedstonePower(IUniCable cable, Direction side) {
+	default int getWeakRedstonePower(IUniCableSide cableSide) {
 		return 0;
-	}
-
-	/**
-	 * Appends additional properties into UniCable block builder.
-	 */
-	default void appendCableProperties(StateFactory.Builder<Block, BlockState> builder) {
-	}
-
-	/**
-	 * @return Returns the state with default properties.
-	 */
-	default BlockState setDefaultProperties(BlockState state) {
-		return state;
 	}
 
 	/**

@@ -1,9 +1,10 @@
-package com.github.sejoslaw.unimod.common.modules.unicable.general;
+package com.github.sejoslaw.unimod.common.modules.unicable.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
+import com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.UniModProperties;
@@ -33,8 +34,13 @@ public final class CableConnectionModule implements IUniCableModule {
 				continue;
 			}
 
-			UniModProperties.setDirectionState(cable, direction, true);
-			UniModProperties.setDirectionState(neighbour, direction.getOpposite(), true);
+			IUniCableSide cableSide = cable.getCableSide(direction);
+			IUniCableSide neighbourSide = neighbour.getCableSide(direction.getOpposite());
+
+			UniCableSide.setSide(cableSide, true);
+
+			UniCableSettingsModule.setBoth(cableSide, UniCableCoreModuleNames.MODULE_GROUP_CORE_KEY, true);
+			UniCableSettingsModule.setBoth(neighbourSide, UniCableCoreModuleNames.MODULE_GROUP_CORE_KEY, true);
 		}
 	}
 
@@ -46,14 +52,10 @@ public final class CableConnectionModule implements IUniCableModule {
 		}
 	}
 
-	public boolean canConnect(IUniCable cable, Direction direction) {
-		return UniCableUtils.getCable(cable.getWorld(), cable.getPos().offset(direction)) != null;
-	}
-
-	public Collection<String> getMessages(IUniCable cable, Direction side, ItemStack stack) {
+	public Collection<String> getMessages(IUniCableSide cableSide, ItemStack stack) {
 		Collection<String> messages = new ArrayList<>();
 
-		if (this.canConnect(cable, side)) {
+		if (cableSide.getCable().getCableSide(cableSide.getSide()).isConnected()) {
 			messages.add("Found connected cable.");
 		}
 
@@ -64,14 +66,15 @@ public final class CableConnectionModule implements IUniCableModule {
 		for (Direction side : Direction.values()) {
 			String key = TileEntityUniCable.getDirectionKey(side);
 			boolean isConnected = tag.getBoolean(key);
-			UniModProperties.setDirectionState(cable, side, isConnected);
+			IUniCableSide cableSide = cable.getCableSide(side);
+			UniCableSide.setSide(cableSide, isConnected);
 		}
 	}
 
 	public void writeToNBT(IUniCable cable, CompoundTag tag) {
 		for (Direction side : Direction.values()) {
 			String key = TileEntityUniCable.getDirectionKey(side);
-			boolean isCableConnected = UniModProperties.isConnected(cable, side);
+			boolean isCableConnected = UniModProperties.isConnected(cable.getCableSide(side));
 			tag.putBoolean(key, isCableConnected);
 		}
 	}
