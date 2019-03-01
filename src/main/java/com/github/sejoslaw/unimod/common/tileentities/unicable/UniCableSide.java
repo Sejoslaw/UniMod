@@ -1,6 +1,7 @@
 package com.github.sejoslaw.unimod.common.tileentities.unicable;
 
-import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModuleGroup;
+import com.github.sejoslaw.unimod.api.registries.UniCableModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.UniModProperties;
@@ -30,8 +31,8 @@ public final class UniCableSide implements IUniCableSide {
 	}
 
 	public boolean isConnected() {
-		for (String moduleGroupName : ModuleRegistry.UNI_CABLE_MODULES.keySet()) {
-			if (UniCableSettingsModule.isConnected(this, moduleGroupName)) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			if (UniCableSettingsModule.isConnected(this, moduleGroup.getGroupName())) {
 				return true;
 			}
 		}
@@ -40,8 +41,8 @@ public final class UniCableSide implements IUniCableSide {
 	}
 
 	public void updateConnections() {
-		for (String moduleGroupName : ModuleRegistry.UNI_CABLE_MODULES.keySet()) {
-			if (UniCableSettingsModule.isConnected(this, moduleGroupName)) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			if (UniCableSettingsModule.isConnected(this, moduleGroup.getGroupName())) {
 				setSide(this, true);
 			}
 		}

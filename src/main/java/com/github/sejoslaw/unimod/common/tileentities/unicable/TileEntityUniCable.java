@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
-import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModuleGroup;
+import com.github.sejoslaw.unimod.api.registries.UniCableModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.UniModTileEntities;
@@ -35,8 +36,8 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	public TileEntityUniCable() {
 		super(UniModTileEntities.UNI_CABLE);
 
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModule module : moduleGroup.getModules()) {
 				module.initialize(this);
 			}
 		}
@@ -47,9 +48,9 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 		Map<Direction, Set<IUniCableModule>> outputters = new HashMap<>();
 
 		// Get all connected directions
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
-				String moduleGroupName = entry.getKey();
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModule module : moduleGroup.getModules()) {
+				String moduleGroupName = moduleGroup.getGroupName();
 
 				for (Direction direction : Direction.values()) {
 					IUniCableSide cableSide = this.getCableSide(direction);
@@ -103,8 +104,8 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	public Collection<String> getMessages(Direction side, ItemStack stack) {
 		Collection<String> messages = new ArrayList<>();
 
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModule module : moduleGroup.getModules()) {
 				Collection<String> moduleMessages = module.getMessages(this.getCableSide(side), stack);
 
 				if (moduleMessages != null && !moduleMessages.isEmpty()) {
@@ -119,8 +120,8 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
 
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModule module : moduleGroup.getModules()) {
 				module.readFromNBT(this, tag);
 			}
 		}
@@ -129,8 +130,8 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModule module : moduleGroup.getModules()) {
 				module.writeToNBT(this, tag);
 			}
 		}
@@ -145,8 +146,8 @@ public class TileEntityUniCable extends BlockEntity implements Tickable, IUniCab
 
 		int power = 0;
 
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModule module : moduleGroup.getModules()) {
 				int moduleRedstonePower = module.getWeakRedstonePower(this.getCableSide(side));
 				power = Math.max(power, moduleRedstonePower);
 			}

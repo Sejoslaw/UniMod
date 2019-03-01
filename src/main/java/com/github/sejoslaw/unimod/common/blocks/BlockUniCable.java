@@ -1,12 +1,11 @@
 package com.github.sejoslaw.unimod.common.blocks;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 import com.github.sejoslaw.unimod.api.items.IUniWrench;
 import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
-import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModuleGroup;
+import com.github.sejoslaw.unimod.api.registries.UniCableModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.common.UniModLogger;
 import com.github.sejoslaw.unimod.common.UniModProperties;
@@ -106,8 +105,8 @@ public class BlockUniCable extends BlockWithEntity {
 			return;
 		}
 
-		for (Map.Entry<String, Set<IUniCableModule>> entry : ModuleRegistry.UNI_CABLE_MODULES.entrySet()) {
-			for (IUniCableModule module : entry.getValue()) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModule module : moduleGroup.getModules()) {
 				module.onBlockPlaced(cable, world, pos, state);
 			}
 		}

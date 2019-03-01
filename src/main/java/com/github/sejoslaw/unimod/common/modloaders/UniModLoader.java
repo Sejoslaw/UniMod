@@ -4,7 +4,12 @@ import static com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModule
 import static com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames.MODULE_GROUP_FLUIDS_KEY;
 import static com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames.MODULE_GROUP_REDSTONE_KEY;
 
-import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
+import com.github.sejoslaw.unimod.api.modules.unicable.UniCableModuleGroup;
+import com.github.sejoslaw.unimod.api.registries.UniCableModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.common.UniModBlocks;
 import com.github.sejoslaw.unimod.common.UniModItems;
@@ -55,18 +60,9 @@ public abstract class UniModLoader {
 	}
 
 	private void initUniCableModules() {
-		// UniCable general modules
-		ModuleRegistry.addUniCableModule(MODULE_GROUP_CORE_KEY, new CableConnectionModule());
-		ModuleRegistry.addUniCableModule(MODULE_GROUP_CORE_KEY, new UniCableSettingsModule());
-
-		// Redstone-related modules
-		ModuleRegistry.addUniCableModule(MODULE_GROUP_REDSTONE_KEY, new RedstoneSignalTransportModule());
-
-		// Fluid-related modules
-		ModuleRegistry.addUniCableModule(MODULE_GROUP_FLUIDS_KEY, new FluidStorageModule());
-		ModuleRegistry.addUniCableModule(MODULE_GROUP_FLUIDS_KEY, new FluidInputModule());
-
-		// Item-related modules
+		this.addUniCableModules(MODULE_GROUP_CORE_KEY, new CableConnectionModule(), new UniCableSettingsModule());
+		this.addUniCableModules(MODULE_GROUP_REDSTONE_KEY, new RedstoneSignalTransportModule());
+		this.addUniCableModules(MODULE_GROUP_FLUIDS_KEY, new FluidStorageModule(), new FluidInputModule());
 	}
 
 	private void registerBlock(Identifier id, Block block) {
@@ -74,5 +70,10 @@ public abstract class UniModLoader {
 
 		Settings itemSettings = new Item.Settings().stackSize(64).itemGroup(UniModItemGroup.ITEM_GROUP);
 		Registry.ITEM.register(id, new BlockItem(block, itemSettings));
+	}
+
+	private void addUniCableModules(String groupName, IUniCableModule... module) {
+		UniCableModuleRegistry.UNI_CABLE_MODULES
+				.add(new UniCableModuleGroup(groupName, new HashSet<IUniCableModule>(Arrays.asList(module))));
 	}
 }

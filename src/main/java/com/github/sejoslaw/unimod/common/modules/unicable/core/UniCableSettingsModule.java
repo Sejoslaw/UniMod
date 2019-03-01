@@ -3,7 +3,8 @@ package com.github.sejoslaw.unimod.common.modules.unicable.core;
 import java.util.function.Consumer;
 
 import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModule;
-import com.github.sejoslaw.unimod.api.registries.ModuleRegistry;
+import com.github.sejoslaw.unimod.api.modules.unicable.IUniCableModuleGroup;
+import com.github.sejoslaw.unimod.api.registries.UniCableModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.enums.EnumOperationDirection;
@@ -93,9 +94,9 @@ public class UniCableSettingsModule implements IUniCableModule {
 
 	private static void processEachSettings(Consumer<String> consumer) {
 		for (Direction side : Direction.values()) {
-			for (String moduleGroupName : ModuleRegistry.UNI_CABLE_MODULES.keySet()) {
+			for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
 				for (EnumOperationDirection operationDirection : EnumOperationDirection.values()) {
-					String key = buildKeyEnabled(side, moduleGroupName, operationDirection);
+					String key = buildKeyEnabled(side, moduleGroup.getGroupName(), operationDirection);
 					consumer.accept(key);
 				}
 			}
