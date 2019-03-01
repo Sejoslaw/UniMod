@@ -16,6 +16,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.gui.ContainerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.util.math.Direction;
 
 /**
@@ -43,6 +44,10 @@ public class UniCableGui extends ContainerScreen<UniCableContainer> {
 
 	public ChangeableStringTextComponent getPath() {
 		return (ChangeableStringTextComponent) this.name;
+	}
+
+	public ItemRenderer getItemRenderer() {
+		return this.itemRenderer;
 	}
 
 	public int getContainerWidth() {
