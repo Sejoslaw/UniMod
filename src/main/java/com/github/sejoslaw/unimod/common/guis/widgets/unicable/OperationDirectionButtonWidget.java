@@ -6,10 +6,10 @@ import com.github.sejoslaw.unimod.common.guis.UniCableGui;
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public class UniCableOperationDirectionButtonWidget extends AbstractUniCableButtonWidget {
+public class OperationDirectionButtonWidget extends AbstractUniCableButtonWidget {
 	private EnumOperationDirection operationDirection;
 
-	public UniCableOperationDirectionButtonWidget(int id, int posX, int posY, int width, int height, UniCableGui gui,
+	public OperationDirectionButtonWidget(int id, int posX, int posY, int width, int height, UniCableGui gui,
 			EnumOperationDirection operationDirection) {
 		super(id, posX, posY, width, height, gui, operationDirection.getText());
 		this.operationDirection = operationDirection;
@@ -18,7 +18,6 @@ public class UniCableOperationDirectionButtonWidget extends AbstractUniCableButt
 	public void onClick() {
 		this.gui.getContainer().stage++;
 		this.gui.getContainer().operationDirection = this.operationDirection;
-
 		this.gui.redraw();
 	}
 }

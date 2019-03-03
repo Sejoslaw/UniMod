@@ -33,7 +33,10 @@ public class FluidInputModule extends FluidModuleBase {
 				continue;
 			}
 
-			UniCableSide.setSide(cable.getCableSide(direction), true);
+			IUniCableSide side = cable.getCableSide(direction);
+
+			UniCableSide.setSide(side, true);
+			UniCableSettingsModule.setBoth(side, UniCableCoreModuleNames.MODULE_GROUP_FLUIDS_KEY, true);
 		}
 	}
 
@@ -63,10 +66,9 @@ public class FluidInputModule extends FluidModuleBase {
 	public void filterMessages(IUniCableSide side, Stack<String> messages) {
 		FluidState fluidState = this.getFluidState(side);
 
-		if (!UniCableSettingsModule.canInput(side, UniCableCoreModuleNames.MODULE_GROUP_FLUIDS_KEY)) {
-			return;
+		if (UniCableSettingsModule.isConnected(side, UniCableCoreModuleNames.MODULE_GROUP_FLUIDS_KEY)
+				&& fluidState.getFluid() != Fluids.EMPTY) {
+			messages.push("Found Fluid: " + this.getFluidFullName(fluidState.getFluid()));
 		}
-
-		messages.push("Found Fluid: " + this.getFluidFullName(fluidState.getFluid()));
 	}
 }

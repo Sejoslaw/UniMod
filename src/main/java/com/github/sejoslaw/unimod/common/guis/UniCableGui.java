@@ -2,14 +2,15 @@ package com.github.sejoslaw.unimod.common.guis;
 
 import java.util.List;
 
+import com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames;
 import com.github.sejoslaw.unimod.common.containers.UniCableContainer;
 import com.github.sejoslaw.unimod.common.enums.EnumOperationDirection;
-import com.github.sejoslaw.unimod.common.guis.widgets.unicable.AbstractUniCableButtonWidget;
-import com.github.sejoslaw.unimod.common.guis.widgets.unicable.UniCableDirectionButtonWidget;
-import com.github.sejoslaw.unimod.common.guis.widgets.unicable.UniCableEnableModuleGroupWidgetButton;
-import com.github.sejoslaw.unimod.common.guis.widgets.unicable.UniCableGoBackButtonWidget;
-import com.github.sejoslaw.unimod.common.guis.widgets.unicable.UniCableOperationDirectionButtonWidget;
-import com.github.sejoslaw.unimod.common.guis.widgets.unicable.UniCableSwitchModuleGroupButtonWidget;
+import com.github.sejoslaw.unimod.common.guis.widgets.unicable.DirectionButtonWidget;
+import com.github.sejoslaw.unimod.common.guis.widgets.unicable.EnableModuleGroupWidgetButton;
+import com.github.sejoslaw.unimod.common.guis.widgets.unicable.GoBackButtonWidget;
+import com.github.sejoslaw.unimod.common.guis.widgets.unicable.OpenModuleGroupSettingsButtonWidget;
+import com.github.sejoslaw.unimod.common.guis.widgets.unicable.OperationDirectionButtonWidget;
+import com.github.sejoslaw.unimod.common.guis.widgets.unicable.SwitchModuleGroupButtonWidget;
 import com.github.sejoslaw.unimod.common.texts.ChangeableStringTextComponent;
 import com.github.sejoslaw.unimod.core.UniModNames;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -118,17 +119,17 @@ public class UniCableGui extends ContainerScreen<UniCableContainer> {
 	private void initializeStage1() {
 		this.config.reload(this);
 
-		this.addButton(new UniCableDirectionButtonWidget(0, this.config.left + 10, this.config.top + 20, 40, 20,
-				Direction.UP, this));
-		this.addButton(new UniCableDirectionButtonWidget(1, this.config.left + this.config.centerContainerX - 20,
+		this.addButton(
+				new DirectionButtonWidget(0, this.config.left + 10, this.config.top + 20, 40, 20, Direction.UP, this));
+		this.addButton(new DirectionButtonWidget(1, this.config.left + this.config.centerContainerX - 20,
 				this.config.top + 20, 40, 20, Direction.NORTH, this));
-		this.addButton(new UniCableDirectionButtonWidget(2, this.config.left + this.config.centerContainerX - 20,
+		this.addButton(new DirectionButtonWidget(2, this.config.left + this.config.centerContainerX - 20,
 				this.config.down - this.config.centerContainerY - 5, 40, 20, Direction.SOUTH, this));
-		this.addButton(new UniCableDirectionButtonWidget(3, this.config.right - 10, this.config.top + 20 + 40, 40, 20,
+		this.addButton(new DirectionButtonWidget(3, this.config.right - 10, this.config.top + 20 + 40, 40, 20,
 				Direction.EAST, this));
-		this.addButton(new UniCableDirectionButtonWidget(4, this.config.left + 10,
+		this.addButton(new DirectionButtonWidget(4, this.config.left + 10,
 				this.config.top + this.config.centerContainerY - 45, 40, 20, Direction.WEST, this));
-		this.addButton(new UniCableDirectionButtonWidget(5, this.config.right - 10, this.config.down - 110, 40, 20,
+		this.addButton(new DirectionButtonWidget(5, this.config.right - 10, this.config.down - 110, 40, 20,
 				Direction.DOWN, this));
 	}
 
@@ -136,29 +137,22 @@ public class UniCableGui extends ContainerScreen<UniCableContainer> {
 		this.config.reload(this);
 
 		this.addButton(this.getGoBackButtonWidget());
-		this.addButton(new UniCableSwitchModuleGroupButtonWidget(1,
-				this.config.left + this.config.centerContainerX - 20, this.config.top + 20, 40, 20, this, "/\\", -1));
-		this.addButton(new AbstractUniCableButtonWidget(2, this.config.left + this.config.centerContainerX - 40,
-				this.config.top + this.config.centerContainerY - 45, 80, 20, this, "Core") {
-			public void onClick() {
-				this.gui.getContainer().stage++;
-				this.gui.redraw();
-			}
-		});
-		this.addButton(
-				new UniCableSwitchModuleGroupButtonWidget(3, this.config.left + this.config.centerContainerX - 20,
-						this.config.down - this.config.centerContainerY - 5, 40, 20, this, "\\/", 1));
+		this.addButton(new SwitchModuleGroupButtonWidget(1, this.config.left + this.config.centerContainerX - 20,
+				this.config.top + 20, 40, 20, this, "/\\", -1));
+		this.addButton(new OpenModuleGroupSettingsButtonWidget(2, this.config.left + this.config.centerContainerX - 40,
+				this.config.top + this.config.centerContainerY - 45, 80, 20, this,
+				UniCableCoreModuleNames.MODULE_GROUP_CABLE_KEY));
+		this.addButton(new SwitchModuleGroupButtonWidget(3, this.config.left + this.config.centerContainerX - 20,
+				this.config.down - this.config.centerContainerY - 5, 40, 20, this, "\\/", 1));
 	}
 
 	private void initializeStage3() {
 		this.config.reload(this);
 
 		this.addButton(this.getGoBackButtonWidget());
-		this.addButton(
-				new UniCableOperationDirectionButtonWidget(1, this.config.left + this.config.centerContainerX - 20,
-						this.config.top + 40, 40, 20, this, EnumOperationDirection.INPUT));
-		this.addButton(new UniCableOperationDirectionButtonWidget(2,
-				this.config.left + this.config.centerContainerX - 20,
+		this.addButton(new OperationDirectionButtonWidget(1, this.config.left + this.config.centerContainerX - 20,
+				this.config.top + 40, 40, 20, this, EnumOperationDirection.INPUT));
+		this.addButton(new OperationDirectionButtonWidget(2, this.config.left + this.config.centerContainerX - 20,
 				this.config.down - this.config.centerContainerY - 20, 40, 20, this, EnumOperationDirection.OUTPUT));
 		this.addButton(this.getEnableModuleGroupWidgetButton());
 	}
@@ -171,11 +165,11 @@ public class UniCableGui extends ContainerScreen<UniCableContainer> {
 	}
 
 	private ButtonWidget getGoBackButtonWidget() {
-		return new UniCableGoBackButtonWidget(0, this.config.left + 10, this.config.top + 20, 40, 20, this);
+		return new GoBackButtonWidget(0, this.config.left + 10, this.config.top + 20, 40, 20, this);
 	}
 
 	private ButtonWidget getEnableModuleGroupWidgetButton() {
-		return new UniCableEnableModuleGroupWidgetButton(3, this.config.right - 10, this.config.top + 20, 45, 20, this,
+		return new EnableModuleGroupWidgetButton(3, this.config.right - 10, this.config.top + 20, 45, 20, this,
 				this.container.getModuleGroupEnabled());
 	}
 }

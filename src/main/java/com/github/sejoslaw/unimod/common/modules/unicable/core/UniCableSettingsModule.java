@@ -8,6 +8,7 @@ import com.github.sejoslaw.unimod.api.registries.UniCableModuleRegistry;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.enums.EnumOperationDirection;
+import com.github.sejoslaw.unimod.common.tileentities.unicable.UniCableSide;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
@@ -23,7 +24,9 @@ public class UniCableSettingsModule implements IUniCableModule {
 
 	public void initialize(IUniCable cable) {
 		processEachSettings(key -> {
-			cable.getData().put(key, false);
+			if (!cable.getData().containsKey(key)) {
+				cable.getData().put(key, false);
+			}
 		});
 	}
 
@@ -55,6 +58,7 @@ public class UniCableSettingsModule implements IUniCableModule {
 
 	public static void setInput(IUniCableSide side, String moduleGroupName, boolean value) {
 		setOperation(side, moduleGroupName, EnumOperationDirection.INPUT, value);
+		setOperation(UniCableSide.getOpposite(side), moduleGroupName, EnumOperationDirection.INPUT, value);
 	}
 
 	public static boolean canOutput(IUniCableSide side, String moduleGroupName) {
@@ -89,12 +93,12 @@ public class UniCableSettingsModule implements IUniCableModule {
 
 	private static String buildKeyEnabled(Direction side, String moduleGroupName,
 			EnumOperationDirection operationDirection) {
-		return SETTINGS_KEY + side.getName() + "_" + moduleGroupName + operationDirection.getText() + "_Enabled";
+		return SETTINGS_KEY + side.getName() + "_" + moduleGroupName + "_" + operationDirection.getText() + "_Enabled";
 	}
 
 	private static void processEachSettings(Consumer<String> consumer) {
 		for (Direction side : Direction.values()) {
-			for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+			for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.getModuleGroups()) {
 				for (EnumOperationDirection operationDirection : EnumOperationDirection.values()) {
 					String key = buildKeyEnabled(side, moduleGroup.getGroupName(), operationDirection);
 					consumer.accept(key);

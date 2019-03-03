@@ -17,10 +17,10 @@ import net.minecraft.world.World;
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public class UniCableDirectionButtonWidget extends AbstractUniCableButtonWidget {
+public class DirectionButtonWidget extends AbstractUniCableButtonWidget {
 	private Direction side;
 
-	public UniCableDirectionButtonWidget(int id, int posX, int posY, int width, int height, Direction side,
+	public DirectionButtonWidget(int id, int posX, int posY, int width, int height, Direction side,
 			UniCableGui gui) {
 		super(id, posX, posY, width, height, gui, side.getName().toUpperCase());
 		this.side = side;

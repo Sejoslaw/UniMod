@@ -31,7 +31,7 @@ public final class UniCableSide implements IUniCableSide {
 	}
 
 	public boolean isConnected() {
-		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.getModuleGroups()) {
 			if (UniCableSettingsModule.isConnected(this, moduleGroup.getGroupName())) {
 				return true;
 			}
@@ -41,9 +41,10 @@ public final class UniCableSide implements IUniCableSide {
 	}
 
 	public void updateConnections() {
-		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.UNI_CABLE_MODULES) {
+		for (IUniCableModuleGroup moduleGroup : UniCableModuleRegistry.getModuleGroups()) {
 			if (UniCableSettingsModule.isConnected(this, moduleGroup.getGroupName())) {
 				setSide(this, true);
+				return;
 			}
 		}
 

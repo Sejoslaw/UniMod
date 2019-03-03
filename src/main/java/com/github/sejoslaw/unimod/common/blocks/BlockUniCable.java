@@ -85,16 +85,13 @@ public class BlockUniCable extends BlockWithEntity {
 
 	public void onBroken(IWorld world, BlockPos pos, BlockState state) {
 		for (Direction direction : Direction.values()) {
-			BlockPos neighbourPos = pos.offset(direction);
-			direction = direction.getOpposite();
+			IUniCable neighbourCable = UniCableUtils.getCable(world, pos.offset(direction));
 
-			IUniCable cable = UniCableUtils.getCable(world, neighbourPos);
-
-			if (cable == null) {
+			if (neighbourCable == null) {
 				continue;
 			}
 
-			UniModProperties.setDirectionState(cable.getCableSide(direction), false);
+			UniModProperties.setDirectionState(neighbourCable.getCableSide(direction.getOpposite()), false);
 		}
 	}
 

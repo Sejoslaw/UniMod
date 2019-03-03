@@ -1,5 +1,6 @@
 package com.github.sejoslaw.unimod.common.modloaders;
 
+import static com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames.MODULE_GROUP_CABLE_KEY;
 import static com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames.MODULE_GROUP_CORE_KEY;
 import static com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames.MODULE_GROUP_FLUIDS_KEY;
 import static com.github.sejoslaw.unimod.api.modules.unicable.UniCableCoreModuleNames.MODULE_GROUP_REDSTONE_KEY;
@@ -14,7 +15,7 @@ import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCable;
 import com.github.sejoslaw.unimod.common.UniModBlocks;
 import com.github.sejoslaw.unimod.common.UniModItems;
 import com.github.sejoslaw.unimod.common.UniModTileEntities;
-import com.github.sejoslaw.unimod.common.modules.unicable.core.CableConnectionModule;
+import com.github.sejoslaw.unimod.common.modules.unicable.cable.CableConnectionModule;
 import com.github.sejoslaw.unimod.common.modules.unicable.core.UniCableSettingsModule;
 import com.github.sejoslaw.unimod.common.modules.unicable.fluid.FluidInputModule;
 import com.github.sejoslaw.unimod.common.modules.unicable.fluid.FluidStorageModule;
@@ -60,7 +61,8 @@ public abstract class UniModLoader {
 	}
 
 	private void initUniCableModules() {
-		this.addUniCableModules(MODULE_GROUP_CORE_KEY, new CableConnectionModule(), new UniCableSettingsModule());
+		this.addUniCableModules(MODULE_GROUP_CORE_KEY, new UniCableSettingsModule());
+		this.addUniCableModules(MODULE_GROUP_CABLE_KEY, new CableConnectionModule());
 		this.addUniCableModules(MODULE_GROUP_REDSTONE_KEY, new RedstoneSignalTransportModule());
 		this.addUniCableModules(MODULE_GROUP_FLUIDS_KEY, new FluidStorageModule(), new FluidInputModule());
 	}

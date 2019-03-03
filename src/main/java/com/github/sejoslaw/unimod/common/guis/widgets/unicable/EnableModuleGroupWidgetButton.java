@@ -5,12 +5,13 @@ import com.github.sejoslaw.unimod.api.tileentities.unicable.IUniCableSide;
 import com.github.sejoslaw.unimod.common.enums.EnumOperationDirection;
 import com.github.sejoslaw.unimod.common.guis.UniCableGui;
 import com.github.sejoslaw.unimod.common.modules.unicable.core.UniCableSettingsModule;
+import com.github.sejoslaw.unimod.common.tileentities.unicable.UniCableSide;
 
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public class UniCableEnableModuleGroupWidgetButton extends AbstractUniCableButtonWidget {
-	public UniCableEnableModuleGroupWidgetButton(int id, int posX, int posY, int width, int height, UniCableGui gui,
+public class EnableModuleGroupWidgetButton extends AbstractUniCableButtonWidget {
+	public EnableModuleGroupWidgetButton(int id, int posX, int posY, int width, int height, UniCableGui gui,
 			String text) {
 		super(id, posX, posY, width, height, gui, text);
 	}
@@ -36,6 +37,18 @@ public class UniCableEnableModuleGroupWidgetButton extends AbstractUniCableButto
 			isOutput = true;
 		}
 
+		this.updateSide(side, moduleGroupName, enabled, isInput, isOutput);
+		this.updateSide(UniCableSide.getOpposite(side), moduleGroupName, enabled, isInput, isOutput);
+
+		this.gui.redraw();
+	}
+
+	private void updateSide(IUniCableSide side, String moduleGroupName, boolean enabled, boolean isInput,
+			boolean isOutput) {
+		if (side == null) {
+			return;
+		}
+
 		if (isInput) {
 			UniCableSettingsModule.setInput(side, moduleGroupName, enabled);
 		}
@@ -45,7 +58,5 @@ public class UniCableEnableModuleGroupWidgetButton extends AbstractUniCableButto
 		}
 
 		side.updateConnections();
-
-		this.gui.redraw();
 	}
 }

@@ -7,8 +7,8 @@ import com.github.sejoslaw.unimod.common.guis.UniCableGui;
 /**
  * @author Sejoslaw - https://github.com/Sejoslaw
  */
-public class UniCableGoBackButtonWidget extends AbstractUniCableButtonWidget {
-	public UniCableGoBackButtonWidget(int id, int posX, int posY, int width, int height, UniCableGui gui) {
+public class GoBackButtonWidget extends AbstractUniCableButtonWidget {
+	public GoBackButtonWidget(int id, int posX, int posY, int width, int height, UniCableGui gui) {
 		super(id, posX, posY, width, height, gui, "Back");
 	}
 

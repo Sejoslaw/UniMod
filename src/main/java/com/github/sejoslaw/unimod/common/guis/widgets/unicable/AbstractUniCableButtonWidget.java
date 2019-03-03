@@ -25,5 +25,9 @@ public abstract class AbstractUniCableButtonWidget extends ButtonWidget {
 		this.onClick();
 	}
 
+	public String getText() {
+		return this.method_18329();
+	}
+
 	public abstract void onClick();
 }

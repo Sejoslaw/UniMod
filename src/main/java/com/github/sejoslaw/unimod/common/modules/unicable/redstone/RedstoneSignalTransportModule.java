@@ -44,8 +44,6 @@ public final class RedstoneSignalTransportModule implements IUniCableModule {
 		}
 
 		UniCableRedstoneAPI.setWeakRedstonePower(cable, receivedPower);
-
-		cable.setBlockState(cable.getBlockState());
 	}
 
 	public int getWeakRedstonePower(IUniCableSide cableSide) {
@@ -60,28 +58,14 @@ public final class RedstoneSignalTransportModule implements IUniCableModule {
 	}
 
 	public Collection<String> getMessages(IUniCableSide cableSide, ItemStack stack) {
-		IUniCable cable = cableSide.getCable();
-
 		Collection<String> messages = new ArrayList<>();
 
-		this.addMessage(cable, messages, this.getRedstonePowerMessage(cableSide));
-
-		return messages;
-	}
-
-	private void addMessage(IUniCable cable, Collection<String> messages, String message) {
-		if (message != null) {
-			messages.add(message);
-		}
-	}
-
-	private String getRedstonePowerMessage(IUniCableSide cableSide) {
 		int power = UniCableRedstoneAPI.getWeakRedstonePower(cableSide.getCable());
 
 		if (power > 0) {
-			return "Redstone Power: " + power;
+			messages.add("Redstone Power: " + power);
 		}
 
-		return null;
+		return messages;
 	}
 }
